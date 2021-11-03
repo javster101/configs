@@ -1,0 +1,144 @@
+
+[colors]
+background = #dd222222
+background-alt = #444
+
+foreground = #dfdfdf
+foreground-alt = #555
+
+primary = #ffb52a
+secondary = #e60053
+
+alert = #bd2c40
+
+[bar/secondbar]
+
+width = 100%
+
+font-0 = Arimo Nerd Font:pixelsize=14;1
+
+monitor = DVI-D-0
+
+modules-left = i3 mpd
+modules-center = date
+modules-right = pulseaudio wlan
+
+module-margin = 2
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+[bar/mainbar]
+
+font-0 = Arimo Nerd Font:pixelsize=14;1
+
+width = 100%
+
+monitor = DP-2
+
+modules-left = i3 mpd
+modules-center = date
+modules-right = pulseaudio wlan
+module-margin = 2 
+
+tray-position = right
+tray-maxsize = 18
+tray-padding = 2
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+[module/date]
+type = internal/date
+format-prefix = "   "
+label = %{F#fff}%date%%{F-}   %{F#fff}%time%%{F-}
+date = %m/%d/%Y
+date-alt = %A, %B %d, %Y
+time = %I:%M %p
+time-alt = ${self.time}
+
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+[module/xbacklight]
+type = internal/xbacklight
+
+format = <label> <bar>
+label = BL
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+[module/wlan]
+type = internal/network
+interface = enp4s0
+interval = 1.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+
+format-disconnected = <label-disconnected>
+
+label-connected = %{A1:nm-connection-editor:} %downspeed% %upspeed% %{A}
+label-disconnected = %{A1:nm-connection-editor:} disconnected%{A}
+
+
+ramp-signal-0 =  
+ramp-signal-1 = 睊
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+mount-1 = /mnt/storage
+mount-2 = /mnt/windows
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume =   <ramp-volume>  <label-volume>
+format-muted = <label-muted>
+
+label-muted = ﱝ 0%
+
+label-muted-foreground = #666
+
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 奔
+
+click-right = pavucontrol
+
