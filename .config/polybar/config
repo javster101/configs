@@ -110,6 +110,8 @@ ramp-capacity-2 = 
 ramp-capacity-3 =  
 ramp-capacity-4 =  
 
+click-right = tlpui
+
 [module/kdeconnect]  
 type = custom/script  
 exec = ".local/share/polybar-kdeconnect/polybar-kdeconnect.sh -d"  

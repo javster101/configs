@@ -14,6 +14,8 @@ export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export LESSOPEN="| src-hilite-lesspipe.sh %s" 
 export LESS=' -R '
 
+export SUDO_EDITOR='/usr/bin/nvim'
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/javst/.oh-my-zsh"
 
