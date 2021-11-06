@@ -199,11 +199,9 @@ for_window [class=".*"] border pixel 2
 gaps outer 2
 gaps inner 8
 
-#smart_borders on
 smart_gaps on
-
 
 exec --no-startup-id blueman-applet
 exec_always --no-startup-id /usr/bin/dunst
 exec_always --no-startup-id feh --bg-scale /home/javst/Downloads/wallpaper.jpg
-exec_always --no-startup-id "picom --experimental-backends --config /home/javst/.config/picom.conf"
+exec_always --no-startup-id "picom"

@@ -26,6 +26,10 @@ modules-right = pulseaudio wlan battery
 
 module-margin = 2
 
+tray-position = right
+tray-maxsize = 18
+tray-padding = 2
+
 background = ${colors.background}
 foreground = ${colors.foreground}
 

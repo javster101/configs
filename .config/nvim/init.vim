@@ -7,9 +7,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-sensible'
 Plug 'ryanoasis/vim-devicons'
-Plug 'scrooloose/nerdtree'
+Plug 'ms-jpq/chadtree'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim'
 Plug 'tree-sitter/tree-sitter'
@@ -21,7 +20,7 @@ call plug#end()
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && 
 			\ isdirectory(argv()[0]) && !exists('s:std_in') |
-			\ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd' .argv()[0] | endif
+			\ execute 'CHADopen' argv()[0] | wincmd p | enew | execute 'cd' .argv()[0] | endif
 
 lua << EOF
 
