@@ -36,9 +36,10 @@ highlight Normal ctermbg=none
 highlight NonText ctermbg=none
 
 autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && getcwd() == "/home/javst" | e notes.txt | endif
 autocmd VimEnter * if argc() == 1 && 
 			\ isdirectory(argv()[0]) && !exists('s:std_in') |
-			\ execute 'cd' .argv()[0] | execute CHADopen | endif
+			\ execute 'cd' .argv()[0] | CHADopen | endif
 
 lua << EOF
 
