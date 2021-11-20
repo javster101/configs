@@ -1,8 +1,11 @@
 local home = os.getenv('HOME')
-local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+local workspace_folder = home .. "/.local/share/workspaces/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 
 local config = {}
-config.flags.server_side_fuzzy_completion = true
+config.flags = { 
+    server_side_fuzzy_completion = true,
+    allow_incremental_sync = true
+}
 config.settings = {
   java = {
     signatureHelp = { enabled = true };
@@ -29,23 +32,17 @@ config.settings = {
 };
 
 
-config.cmd = {
-  'java',
-  '-Dosgi.bundles.defaultStartLevel=4',
-  '-Declipse.application=org.ecplipse.jdt.ls.core.id1',
-  '-Declipse.product=org.eclipse.jdt.ls.core.product',
-  '-Dlog.level=ALL',
-  '-noverify',
-  '-Xmx1G',
-  '-jar /usr/share/java/jdtls/plugins/org.eclipse.equinox.launcher_*.jar',
-  '-configuration /usr/share/java/jdtls/config_linux',
-  '--add-modules=ALL-SYSTEM',
-  '--add-opens java.base/java.util=ALL-UNNNAMED',
-  '--add-opens java.base/java.lang=ALL-UNNAMED',
-  '-data', workspace_folder
-    -- ADD REMAINING OPTIONS FROM https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line !
-};
+config.on_attach = function(client, bufnr)
+    -- require('jdtls').setup_dap({ hotcodereplace = 'auto' })
+     require('jdtls.setup').add_commands()
+   end
 
-config.root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'})
+config.cmd = {
+ 'jdtls',
+ '-data', workspace_folder
+}
+
+config.root_dir = require('jdtls.setup').find_root({'.git', 'pom.xml', 'build.gradle'})
 
 require('jdtls').start_or_attach(config)
+require('coq').lsp_ensure_capabilities();
