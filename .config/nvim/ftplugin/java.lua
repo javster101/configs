@@ -35,6 +35,7 @@ config.settings = {
 config.on_attach = function(client, bufnr)
     -- require('jdtls').setup_dap({ hotcodereplace = 'auto' })
      require('jdtls.setup').add_commands()
+     require('lspcfg').load_keybinds(client, bufnr)
    end
 
 config.cmd = {

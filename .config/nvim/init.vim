@@ -15,9 +15,11 @@ autocmd BufWinEnter term://* startinsert
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'nvim-lualine/lualine.nvim'
 Plug 'ms-jpq/chadtree'
 Plug 'kyazdani42/nvim-web-devicons'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim'
 Plug 'ms-jpq/coq.artifacts'
@@ -26,6 +28,7 @@ Plug 'ms-jpq/coq.thirdparty'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'mfussenegger/nvim-jdtls'
 Plug 'joshdick/onedark.vim'
+
 Plug 'lervag/vimtex'
 Plug 'kosayoda/nvim-lightbulb'
 
@@ -51,6 +54,18 @@ lua << EOF
 
 require('lualine').setup()
 
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    additional_vim_regex_highlighting = false
+  },
+  indent = {
+    enable = true,
+  },
+
+}
+
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
 vim.g.coq_settings = {
@@ -75,6 +90,22 @@ vim.g.coq_settings = {
     }
   }
 }
+
+local on_attach = function(client, buffer)
+    require('lspcfg').load_keybinds(client, buffer)
+ end
+
+
+cpp_config = {
+    on_attach = on_attach,
+    compilationDatabaseDirectory = "build";
+}
+
+local coq = require('coq')
+local lspconfig = require('lspconfig')
+lspconfig.ccls.setup(cpp_config)
+lspconfig.ccls.setup(coq.lsp_ensure_capabilities(cpp_config))
+
 
 
 EOF
