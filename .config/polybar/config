@@ -109,9 +109,12 @@ adapter = ADP1
 poll-interval = 5
 
 format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
+format-charging-underline = #9fe8e1
 
-label-charging ="   %percentage%%" 
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = #5f68e1
+
+label-charging ="   %percentage%%"
 label-discharging = "  %percentage%% "
 label-full = Fully charged
 
@@ -235,7 +238,9 @@ label-maxlen = 50
 type = internal/pulseaudio
 
 format-volume = <ramp-volume>  <label-volume>
+format-volume-underline = #fdd0
 format-muted = <label-muted>
+format-muted-underline = #4f4f4f
 
 label-muted = ﱝ 0%
 
