@@ -48,8 +48,8 @@ font-0 = Arimo Nerd Font:pixelsize=13;1
 monitor = DVI-D-0
 
 modules-left = powermenu i3 mpd
-modules-center = date
-modules-right = pulseaudio wlan
+modules-center = title 
+modules-right = pulseaudio wlan date
 
 module-margin = 2
 
@@ -68,9 +68,9 @@ width = 100%
 
 monitor = DP-2
 
-modules-left = powermenu i3
-modules-center = date
-modules-right = kdeconnect pulseaudio wlan
+modules-left = powermenu i3 mpd
+modules-center = title
+modules-right = kdeconnect pulseaudio wlan date
 module-margin = 2 
 
 tray-position = right
@@ -219,10 +219,15 @@ label-focused = %index%
 label-focused-foreground = #ffffff
 label-focused-background = #3f3f3f
 label-focused-underline = #fba922
-label-focused-padding = 1
+label-focused-padding = 2
+
+label-visible = %index%
+label-visible-underline = #888888
+label-visible-padding = 2
+
 
 label-unfocused = %index%
-label-unfocused-padding = 1
+label-unfocused-padding = 2
 
 label-separator = |
 label-separator-padding = 2
