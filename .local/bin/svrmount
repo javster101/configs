@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+mount -t nfs -o vers=3 -O user=javier,pass=$TOWERPW tower.local:/mnt/user/media /mnt/net/media
+mount -t nfs -o vers=3 -O user=javier,pass=$TOWERPW tower.local:/mnt/user/javier-storage /mnt/net/personal
+mount -t nfs -o vers=3 -O user=javier,pass=$TOWERPW tower.local:/mnt/user/opengg-shared /mnt/net/shared

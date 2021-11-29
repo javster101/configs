@@ -24,7 +24,7 @@ monitor = eDP-1
 
 modules-left = powermenu date i3 mpd
 modules-center = title
-modules-right = pulseaudio wlan battery 
+modules-right = pulseaudio wlan backlight battery 
 
 module-margin = 2
 
@@ -114,6 +114,9 @@ format-charging-underline = #9fe8e1
 format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = #5f68e1
 
+format-full = <label-full>
+format-full-underline = #9fe8e1
+
 label-charging ="   %percentage%%"
 label-discharging = "  %percentage%% "
 label-full = Fully charged
@@ -140,6 +143,7 @@ tail = true
 [module/date]
 type = internal/date
 label =  %date%   %time%
+label-underline = #ca6090
 date = %b %d, %Y
 time = %I:%M %p
 
@@ -158,29 +162,21 @@ label-offline =  MPD offline
 label-song-maxlen = 30
 label-song-ellipsis = true
 
-[module/xbacklight]
-type = internal/xbacklight
+[module/backlight]
+type = internal/backlight
 
-format = <label> <bar>
-label = BL
+card = intel_backlight
 
-bar-width = 10
-bar-indicator = |
-bar-indicator-foreground = #fff
-bar-indicator-font = 2
-bar-fill = ─
-bar-fill-font = 2
-bar-fill-foreground = #9f78e1
-bar-empty = ─
-bar-empty-font = 2
-bar-empty-foreground = ${colors.foreground-alt}
+format = <label>
+format-underline = #25a040
+label =   %percentage%%
 
 [module/wlan]
 type = internal/network
 interface = ${root.network-adapter}
 interval = 1.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <ramp-signal>  <label-connected>
 format-connected-underline = #9f78e1
 
 format-disconnected = <label-disconnected>
@@ -243,7 +239,7 @@ label-maxlen = 50
 type = internal/pulseaudio
 
 format-volume = <ramp-volume>  <label-volume>
-format-volume-underline = #fdd0
+format-volume-underline = #fdd030
 format-muted = <label-muted>
 format-muted-underline = #4f4f4f
 

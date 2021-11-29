@@ -4,6 +4,8 @@ set expandtab
 set shiftwidth=4
 set number
 set nowrap
+set termguicolors
+set splitbelow
 
 vmap <C-C> "+y
 nnoremap <C-s> :w<CR>
@@ -20,6 +22,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+Plug 'norcalli/nvim-colorizer.lua'
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim'
 Plug 'ms-jpq/coq.artifacts'
@@ -32,6 +36,12 @@ Plug 'joshdick/onedark.vim'
 Plug 'lervag/vimtex'
 Plug 'kosayoda/nvim-lightbulb'
 
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'aloussase/gradle.vim'
+
 call plug#end()
 
 syntax on
@@ -41,18 +51,44 @@ set foldlevel=99
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
-highlight Normal ctermbg=none
-highlight NonText ctermbg=none
+highlight Normal guibg=none
+highlight NonText guibg=none
 
-autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && getcwd() == "/home/javst" | e notes.txt | endif
-autocmd VimEnter * if argc() == 1 && 
-			\ isdirectory(argv()[0]) && !exists('s:std_in') |
-			\ execute 'cd' .argv()[0] | execute :CHADopen | endif
+
+function! OpenDevEnvImpl() 
+  :CHADopen
+endfunction
+
+command OpenDevEnv call OpenDevEnvImpl()
 
 lua << EOF
 
+require('colorizer').setup()
 require('lualine').setup()
+
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    }
+  }
+}
+
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
+
+opts = { noremap = true, silent = true}
+
+vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
+vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', opts)
+
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -103,6 +139,10 @@ cpp_config = {
 
 local coq = require('coq')
 local lspconfig = require('lspconfig')
+
+lspconfig.pylsp.setup{}
+lspconfig.pylsp.setup(coq.lsp_ensure_capabilities())
+
 lspconfig.ccls.setup(cpp_config)
 lspconfig.ccls.setup(coq.lsp_ensure_capabilities(cpp_config))
 
