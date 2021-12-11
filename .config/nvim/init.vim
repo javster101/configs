@@ -12,12 +12,10 @@ nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>i
 vnoremap <C-s> <Esc>:w<CR>
 
-autocmd TermOpen * setlocal nonumber norelativenumber
-autocmd BufWinEnter term://* startinsert
-
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'ms-jpq/chadtree'
+Plug 'romgrk/barbar.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -31,8 +29,8 @@ Plug 'ms-jpq/coq.thirdparty'
 
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'mfussenegger/nvim-jdtls'
-Plug 'joshdick/onedark.vim'
 
+Plug 'marko-cerovac/material.nvim'
 Plug 'lervag/vimtex'
 Plug 'kosayoda/nvim-lightbulb'
 
@@ -41,31 +39,56 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'aloussase/gradle.vim'
+Plug 'Olical/aniseed'
+
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'karb94/neoscroll.nvim'
 
 call plug#end()
 
 syntax on
-colorscheme onedark
-
-set foldlevel=99
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
 
 highlight Normal guibg=none
 highlight NonText guibg=none
 
 autocmd VimEnter * if argc() == 0 && getcwd() == "/home/javst" | e notes.txt | endif
 
-function! OpenDevEnvImpl() 
-  :CHADopen
-endfunction
-
-command OpenDevEnv call OpenDevEnvImpl()
-
 lua << EOF
+vim.g.bufferline = {
+  auto_hide = true,
+}
+
+require('material').setup({
+
+	contrast = true, -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
+	borders = false, -- Enable borders between verticaly split windows
+
+	popup_menu = "dark", -- Popup menu style ( can be: 'dark', 'light', 'colorful' or 'stealth' )
+
+	italics = {
+		comments = true, -- Enable italic comments
+		keywords = false, -- Enable italic keywords
+		functions = false, -- Enable italic functions
+		strings = false, -- Enable italic strings
+		variables = false -- Enable italic variables
+	},
+
+	disable = {
+		background = true, -- Prevent the theme from setting the background (NeoVim then uses your teminal background)
+		term_colors = false, -- Prevent the theme from setting terminal colors
+		eob_lines = false -- Hide the end-of-buffer lines
+	},
+})
+
+vim.g.material_style = "deep ocean"
+vim.cmd 'colorscheme material'
 
 require('colorizer').setup()
-require('lualine').setup()
+require('lualine').setup {
+  options = {
+    theme = 'material-nvim'
+  }
+}
 
 require('telescope').setup {
   extensions = {
@@ -74,21 +97,18 @@ require('telescope').setup {
       override_generic_sorter = true,  -- override the generic sorter
       override_file_sorter = true,     -- override the file sorter
       case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
     }
   }
 }
 
--- To get fzf loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
 
 opts = { noremap = true, silent = true}
 
+require('neoscroll').setup()
+
 vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
 vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', opts)
-
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -101,6 +121,12 @@ require'nvim-treesitter.configs'.setup {
   },
 
 }
+
+vim.cmd [[
+set foldlevel=99
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+]]
 
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false

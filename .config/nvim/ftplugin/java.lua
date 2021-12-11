@@ -40,6 +40,7 @@ config.on_attach = function(client, bufnr)
 
 config.cmd = {
  'jdtls',
+ '--enable-preview',
  '-data', workspace_folder
 }
 

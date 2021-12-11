@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-server="tower.local"
+server="192.168.1.3"
 
 while getopts s: flag
 do
@@ -9,4 +9,4 @@ do
     esac
 done
 
-mount -t cifs //$server/$1 $2 -o credentials=/etc/samba/credentials/javier,iocharset=utf8,uid=1000,gid=1000,forceuid,forcegid,rw
+mount -t nfs -o vers=3 -O user=javier,pass=$TOWERPW $server:/mnt/user/$1 $2
