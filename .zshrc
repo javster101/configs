@@ -85,7 +85,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git gradle gpg-agent)
+plugins=(git gradle gpg-agent ssh-agent)
+
+
+function open () {
+  xdg-open "$@">/dev/null 2>&1
+}
 
 source $ZSH/oh-my-zsh.sh
 

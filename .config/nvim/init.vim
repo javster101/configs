@@ -14,24 +14,21 @@ vnoremap <C-s> <Esc>:w<CR>
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'ms-jpq/chadtree'
+Plug 'ms-jpq/chadtree', {'do': ':CHADdeps'}
 Plug 'romgrk/barbar.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'kyazdani42/nvim-web-devicons'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'ms-jpq/coq_nvim'
+Plug 'ms-jpq/coq_nvim', {'do': ':COQdeps'}
 Plug 'ms-jpq/coq.artifacts'
 Plug 'ms-jpq/coq.thirdparty'
 
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'mfussenegger/nvim-jdtls'
 
 Plug 'marko-cerovac/material.nvim'
-Plug 'lervag/vimtex'
 Plug 'kosayoda/nvim-lightbulb'
 
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -39,7 +36,8 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'aloussase/gradle.vim'
-Plug 'Olical/aniseed'
+Plug 'mfussenegger/nvim-jdtls'
+Plug 'lervag/vimtex'
 
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'karb94/neoscroll.nvim'
@@ -59,25 +57,21 @@ vim.g.bufferline = {
 }
 
 require('material').setup({
-
-	contrast = true, -- Enable contrast for sidebars, floating windows and popup menus like Nvim-Tree
-	borders = false, -- Enable borders between verticaly split windows
-
-	popup_menu = "dark", -- Popup menu style ( can be: 'dark', 'light', 'colorful' or 'stealth' )
-
-	italics = {
-		comments = true, -- Enable italic comments
-		keywords = false, -- Enable italic keywords
-		functions = false, -- Enable italic functions
-		strings = false, -- Enable italic strings
-		variables = false -- Enable italic variables
-	},
-
-	disable = {
-		background = true, -- Prevent the theme from setting the background (NeoVim then uses your teminal background)
-		term_colors = false, -- Prevent the theme from setting terminal colors
-		eob_lines = false -- Hide the end-of-buffer lines
-	},
+    contrast = {
+        popup_menu = false,
+    },
+    italics = {
+        comments = true, -- Enable italic comments
+        keywords = false, -- Enable italic keywords
+        functions = false, -- Enable italic functions
+        strings = false, -- Enable italic strings
+        variables = false -- Enable italic variables
+    },
+    disable = {
+        background = false, -- Prevent the theme from setting the background (NeoVim then uses your teminal background)
+        term_colors = false, -- Prevent the theme from setting terminal colors
+        eob_lines = false -- Hide the end-of-buffer lines
+    },
 })
 
 vim.g.material_style = "deep ocean"
@@ -155,7 +149,7 @@ vim.g.coq_settings = {
 
 local on_attach = function(client, buffer)
     require('lspcfg').load_keybinds(client, buffer)
- end
+end
 
 
 cpp_config = {
@@ -163,16 +157,23 @@ cpp_config = {
     compilationDatabaseDirectory = "build";
 }
 
+general_config = {
+    on_attach = on_attach
+}
+
 local coq = require('coq')
 local lspconfig = require('lspconfig')
 
 lspconfig.pylsp.setup{}
-lspconfig.pylsp.setup(coq.lsp_ensure_capabilities())
+lspconfig.pylsp.setup(coq.lsp_ensure_capabilities(general_config))
 
 lspconfig.ccls.setup(cpp_config)
 lspconfig.ccls.setup(coq.lsp_ensure_capabilities(cpp_config))
 
+lspconfig.ltex.setup{}
+lspconfig.ltex.setup(coq.lsp_ensure_capabilities(general_config))
 
-
+lspconfig.rust_analyzer.setup{}
+lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities(general_config))
 EOF
 
