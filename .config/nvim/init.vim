@@ -7,51 +7,13 @@ set nowrap
 set termguicolors
 set splitbelow
 
-vmap <C-C> "+y
-nnoremap <C-s> :w<CR>
-inoremap <C-s> <Esc>:w<CR>i
-vnoremap <C-s> <Esc>:w<CR>
-
-call plug#begin('~/.local/share/nvim/plugged')
-
-Plug 'ms-jpq/chadtree', {'do': ':CHADdeps'}
-Plug 'romgrk/barbar.nvim'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'kyazdani42/nvim-web-devicons'
-
-Plug 'neovim/nvim-lspconfig'
-Plug 'ms-jpq/coq_nvim', {'do': ':COQdeps'}
-Plug 'ms-jpq/coq.artifacts'
-Plug 'ms-jpq/coq.thirdparty'
-
-
-Plug 'marko-cerovac/material.nvim'
-Plug 'kosayoda/nvim-lightbulb'
-
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-
-Plug 'aloussase/gradle.vim'
-Plug 'mfussenegger/nvim-jdtls'
-Plug 'lervag/vimtex'
-
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'karb94/neoscroll.nvim'
-
-call plug#end()
-
 syntax on
-
-highlight Normal guibg=none
-highlight NonText guibg=none
 
 autocmd VimEnter * if argc() == 0 && getcwd() == "/home/javst" | e notes.txt | endif
 
 lua << EOF
+require('plugins')
+
 vim.g.bufferline = {
   auto_hide = true,
 }
