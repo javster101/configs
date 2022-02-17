@@ -33,7 +33,7 @@ output * bg /home/javst/Downloads/wallpaper.jpg fill
 
 output DP-1 pos 0 180
 output DP-2 pos 1920 0 mode 2560x1440@150.000Hz adaptive_sync on  
-
+output eDP-1 pos 0 0
 
 ### Idle configuration
 #
@@ -186,6 +186,11 @@ bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
     bindsym Mod1+Tab scratchpad show
+
+# Screenshot:
+    bindsym $mod+Shift+s exec grimshot copy area
+    bindsym $mod+Shift+a exec grimshot save area && notify-send "Saved screenshot" "Saved to /home/javst/Pictures"
+
 #
 # Resizing containers:
 #
