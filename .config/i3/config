@@ -206,6 +206,7 @@ smart_gaps on
 
 exec --no-startup-id blueman-applet
 exec --no-startup-id mopidy
+exec_always --no-startup-id udiskie --tray
 exec_always --no-startup-id /usr/bin/dunst
 exec_always --no-startup-id feh --bg-scale --no-xinerama /home/javst/Downloads/wallpaper.jpg
 exec_always --no-startup-id "picom --experimental-backends"
