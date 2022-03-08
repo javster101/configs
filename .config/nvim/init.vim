@@ -18,6 +18,17 @@ vim.g.bufferline = {
   auto_hide = true,
 }
 
+
+require('guess-indent').setup {
+  auto_cmd = true, 
+  buftype_exclude = {
+    "help",
+    "nofile",
+    "terminal",
+    "prompt",
+  },
+}
+
 require('material').setup({
     contrast = {
         popup_menu = false,

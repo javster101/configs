@@ -29,4 +29,6 @@ return require('packer').startup(function()
   use 'Olical/aniseed'
   use 'Olical/conjure'
 
+  use 'NMAC427/guess-indent.nvim'
+
 end)

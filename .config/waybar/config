@@ -39,6 +39,7 @@
     },
 
     "clock": {
+        "format": "{:%I:%M}",
         "format-alt": "{:%Y-%m-%d}"
     },
 
