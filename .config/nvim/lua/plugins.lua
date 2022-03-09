@@ -11,6 +11,7 @@ return require('packer').startup(function()
   use {'ms-jpq/coq_nvim', run = ':COQdeps'}
   use 'ms-jpq/coq.artifacts'
   use 'ms-jpq/coq.thirdparty'
+  use 'j-hui/fidget.nvim'
 
   use 'marko-cerovac/material.nvim'
   use 'kosayoda/nvim-lightbulb'
@@ -19,7 +20,7 @@ return require('packer').startup(function()
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
 
-  use 'aloussase/gradle.vim'
+  use 'aloussase/telescope-gradle.nvim'
   use 'mfussenegger/nvim-jdtls'
   use 'lervag/vimtex'
 

@@ -50,6 +50,7 @@ require('material').setup({
 vim.g.material_style = "deep ocean"
 vim.cmd 'colorscheme material'
 
+require('fidget').setup()
 require('colorizer').setup()
 require('lualine').setup {
   options = {
@@ -69,6 +70,7 @@ require('telescope').setup {
 }
 
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('gradle')
 
 opts = { noremap = true, silent = true}
 
