@@ -71,13 +71,17 @@ require('telescope').setup {
 
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('gradle')
+require('telescope').load_extension('dap')
 
 opts = { noremap = true, silent = true}
+vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
+vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', opts)
 
 require('neoscroll').setup()
 
-vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
-vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', opts)
+vim.g.symbols_outline = {
+  width = 20,
+}
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -122,6 +126,9 @@ vim.g.coq_settings = {
   }
 }
 
+require('dapui').setup()
+require("nvim-dap-virtual-text").setup()
+
 local on_attach = function(client, buffer)
     require('lspcfg').load_keybinds(client, buffer)
 end
@@ -150,5 +157,20 @@ lspconfig.ltex.setup(coq.lsp_ensure_capabilities(general_config))
 
 lspconfig.rust_analyzer.setup{}
 lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities(general_config))
+
+vim.api.nvim_create_autocmd('FileType', { 
+    pattern = 'scala,sbt',
+    callback = function()
+        require('scala').load_language()
+    end
+})
+
+vim.api.nvim_create_autocmd('FileType', { 
+    pattern = 'java',
+    callback = function()
+        require('java').load_language()
+    end
+})
+
 EOF
 
