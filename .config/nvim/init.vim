@@ -155,6 +155,9 @@ lspconfig.ccls.setup(coq.lsp_ensure_capabilities(cpp_config))
 lspconfig.ltex.setup{}
 lspconfig.ltex.setup(coq.lsp_ensure_capabilities(general_config))
 
+lspconfig.clojure_lsp.setup{}
+lspconfig.clojure_lsp.setup(coq.lsp_ensure_capabilities(general_config))
+
 lspconfig.rust_analyzer.setup{}
 lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities(general_config))
 
