@@ -133,33 +133,43 @@ local on_attach = function(client, buffer)
     require('lspcfg').load_keybinds(client, buffer)
 end
 
-
-cpp_config = {
-    on_attach = on_attach,
-    compilationDatabaseDirectory = "build";
-}
-
-general_config = {
-    on_attach = on_attach
-}
-
 local coq = require('coq')
-local lspconfig = require('lspconfig')
+local lsp_installer = require("nvim-lsp-installer")
 
-lspconfig.pylsp.setup{}
-lspconfig.pylsp.setup(coq.lsp_ensure_capabilities(general_config))
+local servers = {
+  "clangd",
+  "ltex"
+}
 
-lspconfig.ccls.setup(cpp_config)
-lspconfig.ccls.setup(coq.lsp_ensure_capabilities(cpp_config))
+for _, name in pairs(servers) do
+  local server_is_found, server = lsp_installer.get_server(name)
+  if server_is_found and not server:is_installed() then
+    print("Installing " .. name)
+    server:install()
+  end
+end
 
-lspconfig.ltex.setup{}
-lspconfig.ltex.setup(coq.lsp_ensure_capabilities(general_config))
+local enhance_server_opts = {
+  ["gaming"] = function(opts)
+    opts.settings = {
+      format = {
+        enable = true
+      },
+    }
+  end,
+}
 
-lspconfig.clojure_lsp.setup{}
-lspconfig.clojure_lsp.setup(coq.lsp_ensure_capabilities(general_config))
+lsp_installer.on_server_ready(function(server)
+  local opts = {
+    on_attach = on_attach,
+  }
 
-lspconfig.rust_analyzer.setup{}
-lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities(general_config))
+  if enhance_server_opts[server.name] then
+    enhance_server_opts[server.name](opts)
+  end
+
+  server:setup(coq.lsp_ensure_capabilities(opts))
+end)
 
 vim.api.nvim_create_autocmd('FileType', { 
     pattern = 'scala,sbt',

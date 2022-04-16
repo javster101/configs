@@ -231,7 +231,7 @@ gaps outer 0
 gaps inner 6
 default_border pixel 0
 
-exec --no-startup-id mopidy
+# exec --no-startup-id mopidy
 exec --no-startup-id blueman-applet
 exec --no-startup-id udiskie --tray
 

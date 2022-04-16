@@ -8,11 +8,13 @@ return require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
   
   use 'neovim/nvim-lspconfig'
+  use 'williamboman/nvim-lsp-installer'
   use {'ms-jpq/coq_nvim', run = ':COQdeps'}
   use 'ms-jpq/coq.artifacts'
   use 'ms-jpq/coq.thirdparty'
   use 'j-hui/fidget.nvim'
   use 'simrat39/symbols-outline.nvim'
+  use 'stevearc/dressing.nvim'
 
   use 'mfussenegger/nvim-dap'
   use 'rcarriga/nvim-dap-ui'
