@@ -50,8 +50,7 @@ out.load_language = function()
   
   config.root_dir = require('jdtls.setup').find_root({'.git', 'pom.xml', 'build.gradle'})
   
-  require('jdtls').start_or_attach(config)
-  require('coq').lsp_ensure_capabilities();
+  require('jdtls').start_or_attach(require('coq').lsp_ensure_capabilities(config))
 end
 
 return out
