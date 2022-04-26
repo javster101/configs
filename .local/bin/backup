@@ -1,0 +1,7 @@
+#!/bin/bash
+
+SERVER_IP=10.253.0.1
+SNAP_DIR=/home/.snapshots
+LATEST_ID=$(ls -Art $SNAP_DIR | tail -n 1)
+LATEST_PATH=$SNAP_DIR/$LATEST_ID/snapshot
+rsync --archive --inplace --checksum --delete --quiet -e ssh $LATEST_PATH root@$SERVER_IP:/mnt/user/javier-storage/backups/laptop/home-backup
