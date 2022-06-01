@@ -27,8 +27,8 @@ out.load_language = function()
       configuration = {
         runtimes = {
           {
-            name = "JavaSE-17",
-            path = "/usr/lib/jvm/java-17-openjdk/"
+            name = "JavaSE",
+            path = "/usr/lib/jvm/default/"
           }
         }
       };

@@ -15,8 +15,7 @@ export SUDO_EDITOR='/usr/bin/nvim'
 export ZSH="$ZDOTDIR/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git gradle gpg-agent )
-
+plugins=(git gradle gpg-agent)
 
 function open () {
   xdg-open "$@">/dev/null 2>&1
