@@ -6,6 +6,12 @@ set number
 set nowrap
 set termguicolors
 set splitbelow
+set signcolumn=yes
+set updatetime=100
+augroup highlight_yank
+  autocmd!
+  autocmd TextYankPost * silent! lua require('vim.highlight').on_yank()
+augroup END
 
 syntax on
 
@@ -18,7 +24,6 @@ vim.g.bufferline = {
   auto_hide = true,
 }
 
-
 require('guess-indent').setup {
   auto_cmd = true, 
   buftype_exclude = {
@@ -29,49 +34,54 @@ require('guess-indent').setup {
   },
 }
 
-require('material').setup({
-    contrast = {
-        popup_menu = false,
-    },
-    italics = {
-        comments = true, -- Enable italic comments
-        keywords = false, -- Enable italic keywords
-        functions = false, -- Enable italic functions
-        strings = false, -- Enable italic strings
-        variables = false -- Enable italic variables
-    },
-    disable = {
-        background = false, -- Prevent the theme from setting the background (NeoVim then uses your teminal background)
-        term_colors = false, -- Prevent the theme from setting terminal colors
-        eob_lines = false -- Hide the end-of-buffer lines
-    },
-})
+require('material').setup()
 
-vim.g.material_style = "deep ocean"
+vim.g.material_style = 'deep ocean'
 vim.cmd 'colorscheme material'
 
+require('octo').setup()
 require('fidget').setup()
 require('colorizer').setup()
-require('lualine').setup {
-  options = {
-    theme = 'material-nvim'
-  }
+require('nvim-autopairs').setup()
+require('project_nvim').setup()
+require('session_manager').setup({})
+require('nvim-tree').setup {
+  respect_buf_cwd = true,
+  update_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_cwd = true
+  },
 }
 
 require('telescope').setup {
   extensions = {
     fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
     }
   }
 }
-
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('gradle')
 require('telescope').load_extension('dap')
+require('telescope').load_extension('projects')
+
+gps = require('nvim-gps')
+gps.setup()
+
+require('lualine').setup {
+  options = {
+    theme = 'material'
+  },
+  sections = {
+    lualine_c = {
+      { gps.get_location, cond = gps.is_available },
+    }
+  }
+}
 
 opts = { noremap = true, silent = true}
 vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
@@ -184,6 +194,5 @@ vim.api.nvim_create_autocmd('FileType', {
         require('java').load_language()
     end
 })
-
 EOF
 

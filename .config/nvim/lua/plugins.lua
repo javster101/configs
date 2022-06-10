@@ -1,12 +1,16 @@
-return require('packer').startup(function()
-  use {'ms-jpq/chadtree', run =':CHADdeps'}
-  
+return require('packer').startup(function() 
   use 'romgrk/barbar.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'marko-cerovac/material.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'kyazdani42/nvim-web-devicons'
-  
+  use 'kyazdani42/nvim-tree.lua'
+  use 'rcarriga/nvim-notify'
+ 
+  use 'ahmedkhalf/project.nvim'
+  use 'Shatur/neovim-session-manager'
+  use 'pwntester/octo.nvim'
+
   use 'neovim/nvim-lspconfig'
   use 'williamboman/nvim-lsp-installer'
   use {'ms-jpq/coq_nvim', run = ':COQdeps'}
@@ -22,11 +26,12 @@ return require('packer').startup(function()
 
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use 'nvim-lua/plenary.nvim'
+  use 'SmiteshP/nvim-gps'
 
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-dap.nvim'
   use 'aloussase/telescope-gradle.nvim'
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
   
   use 'mfussenegger/nvim-jdtls'
   use 'scalameta/nvim-metals'
@@ -35,6 +40,7 @@ return require('packer').startup(function()
   use 'lukas-reineke/indent-blankline.nvim'
   use 'karb94/neoscroll.nvim'
   use 'NMAC427/guess-indent.nvim'
-  
+  use 'windwp/nvim-autopairs'
+
   use 'Olical/conjure'
 end)
