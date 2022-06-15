@@ -43,7 +43,9 @@ require('octo').setup()
 require('fidget').setup()
 require('colorizer').setup()
 require('nvim-autopairs').setup()
-require('project_nvim').setup()
+-- require('project_nvim').setup()
+require('which-key').setup()
+require('nvterm').setup()
 require('session_manager').setup({})
 require('nvim-tree').setup {
   respect_buf_cwd = true,
@@ -53,6 +55,7 @@ require('nvim-tree').setup {
     update_cwd = true
   },
 }
+
 
 require('telescope').setup {
   extensions = {
@@ -67,10 +70,10 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('gradle')
 require('telescope').load_extension('dap')
-require('telescope').load_extension('projects')
+-- require('telescope').load_extension('projects')
 
-gps = require('nvim-gps')
-gps.setup()
+navic = require('nvim-navic')
+-- navic.setup()
 
 require('lualine').setup {
   options = {
@@ -78,14 +81,15 @@ require('lualine').setup {
   },
   sections = {
     lualine_c = {
-      { gps.get_location, cond = gps.is_available },
+      { navic.get_location, cond = navic.is_available },
     }
   }
 }
 
 opts = { noremap = true, silent = true}
 vim.api.nvim_set_keymap('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
-vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', opts)
+vim.api.nvim_set_keymap('', 'fg', '<cmd>Telescope live_grep<cr>', opts)
+vim.api.nvim_set_keymap('', ' t', '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', opts)
 
 require('neoscroll').setup()
 
@@ -140,6 +144,7 @@ require('dapui').setup()
 require("nvim-dap-virtual-text").setup()
 
 local on_attach = function(client, buffer)
+    require('nvim-navic').attach(client, bufnr)
     require('lspcfg').load_keybinds(client, buffer)
 end
 

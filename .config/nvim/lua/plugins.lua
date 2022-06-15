@@ -6,8 +6,10 @@ return require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
   use 'kyazdani42/nvim-tree.lua'
   use 'rcarriga/nvim-notify'
- 
-  use 'ahmedkhalf/project.nvim'
+  use 'NvChad/nvterm' 
+  use 'folke/which-key.nvim'
+
+--  use 'ahmedkhalf/project.nvim'
   use 'Shatur/neovim-session-manager'
   use 'pwntester/octo.nvim'
 
@@ -19,14 +21,14 @@ return require('packer').startup(function()
   use 'j-hui/fidget.nvim'
   use 'simrat39/symbols-outline.nvim'
   use 'stevearc/dressing.nvim'
-
+  use 'SmiteshP/nvim-navic'
+  
   use 'mfussenegger/nvim-dap'
   use 'rcarriga/nvim-dap-ui'
   use 'theHamsta/nvim-dap-virtual-text'
 
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use 'nvim-lua/plenary.nvim'
-  use 'SmiteshP/nvim-gps'
 
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-dap.nvim'
