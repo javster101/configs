@@ -10,7 +10,7 @@ return require('packer').startup(function()
   use 'folke/which-key.nvim'
 
 --  use 'ahmedkhalf/project.nvim'
-  use 'Shatur/neovim-session-manager'
+--  use 'Shatur/neovim-session-manager'
   use 'pwntester/octo.nvim'
 
   use 'neovim/nvim-lspconfig'

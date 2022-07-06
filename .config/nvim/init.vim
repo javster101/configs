@@ -46,7 +46,7 @@ require('nvim-autopairs').setup()
 -- require('project_nvim').setup()
 require('which-key').setup()
 require('nvterm').setup()
-require('session_manager').setup({})
+-- require('session_manager').setup({})
 require('nvim-tree').setup {
   respect_buf_cwd = true,
   update_cwd = true,
