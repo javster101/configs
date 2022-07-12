@@ -7,9 +7,9 @@ fi
 
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.local/share/coursier/bin:$PATH"
 export LESSOPEN="| src-hilite-lesspipe.sh %s" 
-export LESS=' -R '
+export LESS=" -R "
 
-export SUDO_EDITOR='/usr/bin/nvim'
+export SUDO_EDITOR="/usr/bin/nvim"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$ZDOTDIR/.oh-my-zsh"
@@ -24,6 +24,6 @@ function open () {
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR=nvim
-alias config='/usr/bin/git --git-dir=$HOME/.cfgs --work-tree=$HOME'
+alias config="/usr/bin/git --git-dir=$HOME/.cfgs --work-tree=$HOME"
 
 [[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh
