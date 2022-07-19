@@ -17,7 +17,7 @@ out.load_language = function()
     bundles = {
       vim.fn.glob("/home/javst/Documents/Projects/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar")
     },
-    extendedClientCapabilities = extendedClientCapabilities
+    extendedClientCapabilities = require('cmp_nvim_lsp').update_capabilities(extendedClientCapabilities)
   }
   config.settings = {
     java = {
@@ -60,7 +60,7 @@ out.load_language = function()
   
   config.root_dir = require('jdtls.setup').find_root({'.git', 'pom.xml', 'build.gradle'})
   
-  require('jdtls').start_or_attach(require('coq').lsp_ensure_capabilities(config))
+  require('jdtls').start_or_attach(config)
 end
 
 return out
