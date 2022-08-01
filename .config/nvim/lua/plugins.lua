@@ -16,7 +16,8 @@ return require('packer').startup(function()
 
   -- LSP plugins
   use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
+  use 'williamboman/mason.nvim'
+  use 'williamboman/mason-lspconfig.nvim'
 
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
@@ -30,6 +31,7 @@ return require('packer').startup(function()
   use 'simrat39/symbols-outline.nvim'
   use 'stevearc/dressing.nvim'
   use 'SmiteshP/nvim-navic'
+  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
   
   --DAP plugins
   use 'mfussenegger/nvim-dap'
