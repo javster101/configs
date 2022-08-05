@@ -205,7 +205,10 @@ cmp.setup({
   })
 })
 
-require('lsp_lines').setup()
+local saga = require("lspsaga")
+saga.init_lsp_saga()
+
+-- require('lsp_lines').setup()
 require('cmake').setup({})
 require('mason').setup()
 local mason_lspconfig = require('mason-lspconfig')

@@ -20,7 +20,6 @@ out.load_language = function()
     },
     extendedClientCapabilities = extendedClientCapabilities
   }
-  print("Wow")
   config.settings = {
     java = {
       signatureHelp = { enabled = true };
