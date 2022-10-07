@@ -206,7 +206,11 @@ cmp.setup({
 })
 
 local saga = require("lspsaga")
-saga.init_lsp_saga()
+saga.init_lsp_saga({
+  code_action_lightbulb = {
+    enable = false
+  }
+})
 
 -- require('lsp_lines').setup()
 require('cmake').setup({})
@@ -231,7 +235,6 @@ local enhance_server_opts = {
 }
 
 local on_attach = function(client, buffer)
---    require('nvim-navic').attach(client, bufnr)
     require('lspcfg').load_keybinds(client, buffer)
 end
 
