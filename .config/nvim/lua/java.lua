@@ -3,7 +3,7 @@ out = {}
 
 out.load_language = function()
   local home = os.getenv('HOME')
-  local workspace_folder = home .. "/.local/share/workspaces/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+  local workspace_folder = home .. "/.cache/jdtls/workspaces/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
   
   local extendedClientCapabilities = require'jdtls'.extendedClientCapabilities
   extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
@@ -45,7 +45,7 @@ out.load_language = function()
     };
   };
   
-  config.on_attach = function(client, bufnr)
+   config.on_attach = function(client, bufnr)
        require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
        require('jdtls.setup').add_commands()
        require('lspcfg').load_keybinds(client, bufnr)

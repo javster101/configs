@@ -223,7 +223,7 @@ vim.diagnostic.config({
 })
 
 local enhance_server_opts = {
-  ["clangd"] = function(opts)
+  ["clangd"] = function(opts) 
     opts.cmd = {
       "clangd",
       "--background-index",
@@ -231,7 +231,7 @@ local enhance_server_opts = {
       "--clang-tidy",
       "--completion-style=detailed"
       }
-  end
+    end,
 }
 
 local on_attach = function(client, buffer)
@@ -249,7 +249,9 @@ mason_lspconfig.setup_handlers({
     if enhance_server_opts[server] then
       enhance_server_opts[server](opts)
     end
-
+    if server == 'jdtls' then
+      return
+    end
     require('lspconfig')[server].setup(opts)
   end
 })
@@ -269,6 +271,6 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('VimEnter', {
-    command = 'if argc() == 0 && getcwd() == "/home/javst" | e notes.txt | endif'
+    command = 'if argc() == 0 && getcwd() == $HOME | e notes.txt | endif'
 })
 
