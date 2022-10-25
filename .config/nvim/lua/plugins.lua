@@ -1,4 +1,4 @@
-return require('packer').startup(function() 
+return require('packer').startup(function()
   -- Looks/Tools
   use 'romgrk/barbar.nvim'
   use 'nvim-lualine/lualine.nvim'
@@ -7,12 +7,10 @@ return require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
   use 'kyazdani42/nvim-tree.lua'
   use 'rcarriga/nvim-notify'
-  use 'NvChad/nvterm' 
+  use 'NvChad/nvterm'
   use 'folke/which-key.nvim'
-  use 'pwntester/octo.nvim'
-
-  --  use 'ahmedkhalf/project.nvim'
---  use 'Shatur/neovim-session-manager'
+  use 'ggandor/leap.nvim'
+  use 'tpope/vim-repeat'
 
   -- LSP plugins
   use 'neovim/nvim-lspconfig'
@@ -28,11 +26,11 @@ return require('packer').startup(function()
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
 
+  use 'folke/trouble.nvim'
   use 'j-hui/fidget.nvim'
   use 'simrat39/symbols-outline.nvim'
   use 'stevearc/dressing.nvim'
   use 'SmiteshP/nvim-navic'
-  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
   
   --DAP plugins
   use 'mfussenegger/nvim-dap'
