@@ -13,7 +13,7 @@ out.load_language = function()
       server_side_fuzzy_completion = true,
       allow_incremental_sync = true
   }
-  config.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  config.capabilities = require('cmp_nvim_lsp').default_capabilities()
   config.init_options = {
     bundles = {
       vim.fn.glob("/home/javst/Documents/Projects/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar")

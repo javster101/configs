@@ -9,6 +9,11 @@ vim.o.splitbelow = true
 vim.o.signcolumn = 'yes'
 vim.o.updatetime = 100
 vim.o.syntax = true
+vim.o.foldlevel = 99
+vim.o.foldmethod = 'expr'
+vim.cmd [[
+set foldexpr=nvim_treesitter#foldexpr()
+]]
 
 require('plugins')
 
@@ -57,10 +62,6 @@ require('guess-indent').setup {
   },
 }
 
-require('material').setup()
-
-vim.g.material_style = 'deep ocean'
-vim.cmd 'colorscheme material'
 
 require('fidget').setup()
 require('colorizer').setup()
@@ -77,7 +78,8 @@ require('nvim-tree').setup {
 }
 
 require('bufferline').setup {
-  diagnostics = "nvim_lsp"
+  diagnostics = "nvim_lsp",
+  auto_hide = true
 }
 
 require('telescope').setup {
@@ -94,7 +96,7 @@ require('telescope').load_extension('fzf')
 require('telescope').load_extension('gradle')
 require('telescope').load_extension('dap')
 
-navic = require('nvim-navic')
+local navic = require('nvim-navic')
 navic.setup()
 
 require('lualine').setup {
@@ -109,10 +111,11 @@ require('lualine').setup {
   }
 }
 
-opts = { noremap = true, silent = true }
+local opts = { noremap = true, silent = true }
 vim.keymap.set('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
-vim.keymap.set('', 'fg', '<cmd>Telescope live_grep<cr>', opts)
-vim.keymap.set('', ' t', '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', opts)
+vim.keymap.set('', ' rg', '<cmd>Telescope live_grep<cr>', opts)
+vim.keymap.set('', ' th', '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', opts)
+vim.keymap.set('', ' tv', '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', opts)
 
 vim.g.symbols_outline = {
   width = 20,
@@ -130,17 +133,11 @@ require 'nvim-treesitter.configs'.setup {
 
 }
 
-vim.cmd [[
-set foldlevel=99
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-]]
-
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
 
 require('dapui').setup()
-require("nvim-dap-virtual-text").setup()
+require('nvim-dap-virtual-text').setup()
 require('leap').add_default_mappings()
 require('trouble').setup({
   position = "left"
@@ -218,12 +215,10 @@ saga.init_lsp_saga({
 
 require('cmake').setup({})
 require('mason').setup()
+
+local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 local mason_lspconfig = require('mason-lspconfig')
 mason_lspconfig.setup()
-
-vim.diagnostic.config({
- -- virtual_text = false,
-})
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
@@ -235,29 +230,79 @@ local enhance_server_opts = {
       "--completion-style=detailed"
     }
   end,
+  ["rust_analyzer"] = function(opts)
+    opts.settings = {
+      ["rust-analyzer"] = {
+        lens = {
+          enable = true,
+        }
+      }
+    }
+    opts.on_attach = function(client, buffer)
+      require('lspcfg').load_keybinds(client, buffer)
+      vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, {noremap = true})
+    end
+  end,
 }
 
 local on_attach = function(client, buffer)
   require('lspcfg').load_keybinds(client, buffer)
 end
 
+local opts = {
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  on_attach = on_attach,
+}
 
 mason_lspconfig.setup_handlers({
   function(server)
-    local opts = {
-      capabilities = require('cmp_nvim_lsp').default_capabilities(),
-      on_attach = on_attach,
-    }
 
     if enhance_server_opts[server] then
       enhance_server_opts[server](opts)
     end
+
     if server == 'jdtls' then
       return
     end
+
+    if server == 'rust_analyzer' then
+      require('rust-tools').setup({
+        server = opts,
+        tools = {
+          on_initialized = function()
+            vim.api.nvim_create_autocmd({"BufWritePost", "BufEnter", "CursorHold", "InsertLeave"}, {
+              pattern = { "*.rs" },
+              callback = function()
+                local _, _ = pcall(vim.lsp.codelens.refresh)
+              end,
+            })
+          end,
+          runnables = {
+            use_telescope = true
+          },
+        },
+        hover_actions = {
+          auto_focus = true,
+        },
+        dap = {
+          adapter = require('rust-tools.dap').get_codelldb_adapter(
+            mason_path .. '/bin/codelldb', mason_path .. '/packages/codelldb/extension/lldb/lib/liblldb.so'
+          )
+        }
+      })
+      return
+    end
+
     require('lspconfig')[server].setup(opts)
   end
 })
+
+local dap = require("dap")
+dap.adapters.codelldb = {
+  type = 'server',
+  host = '127.0.0.1',
+  port = 13000
+}
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'scala,sbt',
@@ -276,3 +321,13 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('VimEnter', {
   command = 'if argc() == 0 && getcwd() == $HOME | e notes.txt | endif'
 })
+
+-- Stays last
+require('material').setup({
+  plugins = {
+    "dap", "lspsaga", "nvim-cmp", "nvim-navic",
+    "nvim-tree", "trouble", "which-key", "indent-blankline"
+  }
+})
+vim.g.material_style = 'deep ocean'
+vim.cmd 'colorscheme material'

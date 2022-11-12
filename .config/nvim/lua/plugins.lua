@@ -65,7 +65,7 @@ return require('packer').startup(function()
   use 'scalameta/nvim-metals'
   use 'lervag/vimtex'
   use 'Shatur/neovim-cmake'
-  use 'Olical/conjure'
+  use 'simrat39/rust-tools.nvim'
 
   use 'lukas-reineke/indent-blankline.nvim'
   use 'NMAC427/guess-indent.nvim'
