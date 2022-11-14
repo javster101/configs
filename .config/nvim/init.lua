@@ -62,7 +62,7 @@ require('guess-indent').setup {
   },
 }
 
-
+require('keybinds').load_keybinds()
 require('fidget').setup()
 require('colorizer').setup()
 require('nvim-autopairs').setup()
@@ -111,11 +111,6 @@ require('lualine').setup {
   }
 }
 
-local opts = { noremap = true, silent = true }
-vim.keymap.set('', '<M-n>', '<cmd>Telescope find_files<cr>', opts)
-vim.keymap.set('', ' rg', '<cmd>Telescope live_grep<cr>', opts)
-vim.keymap.set('', ' th', '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', opts)
-vim.keymap.set('', ' tv', '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', opts)
 
 vim.g.symbols_outline = {
   width = 20,
@@ -239,19 +234,13 @@ local enhance_server_opts = {
       }
     }
     opts.on_attach = function(client, buffer)
-      require('lspcfg').load_keybinds(client, buffer)
       vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, {noremap = true})
     end
   end,
 }
 
-local on_attach = function(client, buffer)
-  require('lspcfg').load_keybinds(client, buffer)
-end
-
 local opts = {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
-  on_attach = on_attach,
 }
 
 mason_lspconfig.setup_handlers({
