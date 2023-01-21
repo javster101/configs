@@ -14,7 +14,7 @@ return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- Looks/Tools
-  use 'romgrk/barbar.nvim'
+  use 'akinsho/bufferline.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'marko-cerovac/material.nvim'
   use 'norcalli/nvim-colorizer.lua'
@@ -63,7 +63,6 @@ return require('packer').startup(function()
   -- Language LSPs/other
   use 'mfussenegger/nvim-jdtls'
   use 'scalameta/nvim-metals'
-  use 'lervag/vimtex'
   use 'Shatur/neovim-cmake'
   use 'simrat39/rust-tools.nvim'
 

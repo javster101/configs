@@ -78,8 +78,9 @@ require('nvim-tree').setup {
 }
 
 require('bufferline').setup {
-  diagnostics = "nvim_lsp",
-  auto_hide = true
+  options = {
+    diagnostics = "nvim_lsp"
+  }
 }
 
 require('telescope').setup {
