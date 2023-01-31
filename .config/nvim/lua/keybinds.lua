@@ -43,9 +43,9 @@ out.load_keybinds = function()
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.keymap.set('n', '<M-n>', '<cmd>Telescope find_files<CR>', opts)
   vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', opts)
-  vim.keymap.set('n', '<space>e', require("lspsaga.diagnostic").show_line_diagnostics, opts)
-  vim.keymap.set('n', '<space>[e', require("lspsaga.diagnostic").goto_prev, opts)
-  vim.keymap.set('n', '<space>]e', require("lspsaga.diagnostic").goto_next, opts)
+--   vim.keymap.set('n', '<space>e', require("lspsaga.diagnostic").show_line_diagnostics, opts)
+--   vim.keymap.set('n', '<space>[e', require("lspsaga.diagnostic").goto_prev, opts)
+--   vim.keymap.set('n', '<space>]e', require("lspsaga.diagnostic").goto_next, opts)
   vim.keymap.set('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting_sync()<CR>', opts)
 end
 

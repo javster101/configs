@@ -51,38 +51,7 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-
-require('guess-indent').setup {
-  auto_cmd = true,
-  buftype_exclude = {
-    "help",
-    "nofile",
-    "terminal",
-    "prompt",
-  },
-}
-
 require('keybinds').load_keybinds()
-require('fidget').setup()
-require('colorizer').setup()
-require('nvim-autopairs').setup()
-require('which-key').setup()
-require('nvterm').setup()
-require('nvim-tree').setup {
-  respect_buf_cwd = true,
-  update_cwd = true,
-  update_focused_file = {
-    enable = true,
-    update_cwd = true
-  },
-}
-
-require('bufferline').setup {
-  options = {
-    diagnostics = "nvim_lsp"
-  }
-}
-
 require('telescope').setup {
   extensions = {
     fzf = {
@@ -117,27 +86,8 @@ vim.g.symbols_outline = {
   width = 20,
 }
 
-require 'nvim-treesitter.configs'.setup {
-  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = true, -- false will disable the whole extension
-    additional_vim_regex_highlighting = false
-  },
-  indent = {
-    enable = true,
-  },
-
-}
-
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
-
-require('dapui').setup()
-require('nvim-dap-virtual-text').setup()
-require('leap').add_default_mappings()
-require('trouble').setup({
-  position = "left"
-})
 
 local luasnip = require("luasnip")
 local cmp = require('cmp')
@@ -202,19 +152,7 @@ cmp.setup({
   })
 })
 
-local saga = require("lspsaga")
-saga.init_lsp_saga({
-  code_action_lightbulb = {
-    enable = false
-  }
-})
-
-require('cmake').setup({})
-require('mason').setup()
-
 local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
-local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup()
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
@@ -244,7 +182,7 @@ local opts = {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 }
 
-mason_lspconfig.setup_handlers({
+require('mason-lspconfig').setup_handlers({
   function(server)
 
     if enhance_server_opts[server] then
