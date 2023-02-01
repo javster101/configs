@@ -63,7 +63,6 @@ require('telescope').setup {
   }
 }
 require('telescope').load_extension('fzf')
-require('telescope').load_extension('gradle')
 require('telescope').load_extension('dap')
 
 local navic = require('nvim-navic')

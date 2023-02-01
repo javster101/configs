@@ -1,12 +1,12 @@
 local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-        vim.cmd [[packadd packer.nvim]]
-        return true
-    end
-    return false
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 local packer_bootstrap = ensure_packer()
 
@@ -33,7 +33,7 @@ return require('packer').startup(function()
     end
   }
   use 'kyazdani42/nvim-web-devicons'
-  use {'kyazdani42/nvim-tree.lua',
+  use { 'kyazdani42/nvim-tree.lua',
     config = function()
       require('nvim-tree').setup {
         respect_buf_cwd = true,
@@ -83,11 +83,7 @@ return require('packer').startup(function()
   use {
     'glepnir/lspsaga.nvim',
     config = function()
-      require('lspsaga').setup({
-        code_action_lightbulb = {
-          enable = false
-        } 
-      })
+      require('lspsaga').setup({})
     end
   }
 
@@ -102,7 +98,7 @@ return require('packer').startup(function()
   use {
     'folke/trouble.nvim',
     config = function()
-      require('trouble').setup{
+      require('trouble').setup {
         position = "left"
       }
     end
@@ -113,10 +109,9 @@ return require('packer').startup(function()
       require('fidget').setup()
     end
   }
-  use 'simrat39/symbols-outline.nvim'
   use 'stevearc/dressing.nvim'
   use 'SmiteshP/nvim-navic'
-  
+
   --DAP plugins
   use 'mfussenegger/nvim-dap'
   use {
@@ -153,8 +148,9 @@ return require('packer').startup(function()
   -- Telescope plugins
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-dap.nvim'
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-  
+  use { 'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+
   -- Language LSPs/other
   use 'mfussenegger/nvim-jdtls'
   use 'scalameta/nvim-metals'
@@ -195,6 +191,6 @@ return require('packer').startup(function()
   }
 
   if packer_boostrap then
-      require('packer').sync()
+    require('packer').sync()
   end
 end)
