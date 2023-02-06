@@ -33,7 +33,7 @@ return require('packer').startup(function()
     end
   }
   use 'kyazdani42/nvim-web-devicons'
-  use { 'kyazdani42/nvim-tree.lua',
+  use { 'nvim-tree/nvim-tree.lua',
     config = function()
       require('nvim-tree').setup {
         respect_buf_cwd = true,
@@ -58,13 +58,6 @@ return require('packer').startup(function()
       require('which-key').setup()
     end
   }
-  use {
-    'ggandor/leap.nvim',
-    config = function()
-      require('leap').add_default_mappings()
-    end
-  }
-  use 'tpope/vim-repeat'
 
   -- LSP plugins
   use 'neovim/nvim-lspconfig'
@@ -168,6 +161,7 @@ return require('packer').startup(function()
     end
   }
 
+  -- Editing
   use 'lukas-reineke/indent-blankline.nvim'
   use {
     'NMAC427/guess-indent.nvim',
@@ -189,7 +183,21 @@ return require('packer').startup(function()
       require('nvim-autopairs').setup()
     end
   }
-
+  use {
+    'kevinhwang91/nvim-ufo',
+    requires = 'kevinhwang91/promise-async',
+    config = function ()
+      require('ufo').setup()
+    end
+  }
+  use {
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').add_default_mappings()
+    end
+  }
+  use 'tpope/vim-repeat'
+  
   if packer_boostrap then
     require('packer').sync()
   end

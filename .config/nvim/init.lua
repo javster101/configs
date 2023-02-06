@@ -9,11 +9,11 @@ vim.o.splitbelow = true
 vim.o.signcolumn = 'yes'
 vim.o.updatetime = 100
 vim.o.syntax = true
+
+vim.o.foldcolumn = '1'
 vim.o.foldlevel = 99
-vim.o.foldmethod = 'expr'
-vim.cmd [[
-set foldexpr=nvim_treesitter#foldexpr()
-]]
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 require('plugins')
 
@@ -155,13 +155,13 @@ local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
-    opts.cmd = {
-      "clangd",
-      "--background-index",
-      "--suggest-missing-includes",
-      "--clang-tidy",
-      "--completion-style=detailed"
-    }
+   -- opts.cmd = {
+   --   "clangd",
+   --   "--background-index",
+   --   "--suggest-missing-includes",
+   --   "--clang-tidy",
+   --   "--completion-style=detailed"
+   -- }
   end,
   ["rust_analyzer"] = function(opts)
     opts.settings = {
@@ -177,8 +177,14 @@ local enhance_server_opts = {
   end,
 }
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
+}
+
 local opts = {
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  capabilities = capabilities
 }
 
 require('mason-lspconfig').setup_handlers({
