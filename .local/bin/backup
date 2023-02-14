@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SERVER_IP=10.253.0.1
-SNAP_DIR=/home/.snapshots
-LATEST_ID=$(ls -Art $SNAP_DIR | tail -n 1)
-LATEST_PATH=$SNAP_DIR/$LATEST_ID/snapshot
-rsync --archive --inplace --checksum --delete --quiet -e ssh $LATEST_PATH root@$SERVER_IP:/mnt/user/javier-storage/backups/laptop/home-backup
+SERVER_IP=192.168.1.3
+sudo btrfs subvolume snapshot /var/home /var/home/sync
+rsync --archive --progress --inplace --checksum --delete -e ssh /var/home/sync/javst/ root@$SERVER_IP:/mnt/user/javier-storage/backups/desktop/home-backup/snapshot/javst
+sudo btrfs subvolume delete /var/home/sync
