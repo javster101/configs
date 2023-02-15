@@ -52,34 +52,6 @@ for type, icon in pairs(signs) do
 end
 
 require('keybinds').load_keybinds()
-require('telescope').setup {
-  extensions = {
-    fzf = {
-      fuzzy = true,
-      override_generic_sorter = true,
-      override_file_sorter = true,
-      case_mode = "smart_case",
-    }
-  }
-}
-require('telescope').load_extension('fzf')
-require('telescope').load_extension('dap')
-
-local navic = require('nvim-navic')
-navic.setup()
-
-require('lualine').setup {
-  options = {
-    theme = 'material',
-    globalstatus = true
-  },
-  sections = {
-    lualine_c = {
-      { navic.get_location, cond = navic.is_available },
-    }
-  }
-}
-
 
 vim.g.symbols_outline = {
   width = 20,
@@ -155,13 +127,13 @@ local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
-   -- opts.cmd = {
-   --   "clangd",
-   --   "--background-index",
-   --   "--suggest-missing-includes",
-   --   "--clang-tidy",
-   --   "--completion-style=detailed"
-   -- }
+    -- opts.cmd = {
+    --   "clangd",
+    --   "--background-index",
+    --   "--suggest-missing-includes",
+    --   "--clang-tidy",
+    --   "--completion-style=detailed"
+    -- }
   end,
   ["rust_analyzer"] = function(opts)
     opts.settings = {
@@ -172,7 +144,7 @@ local enhance_server_opts = {
       }
     }
     opts.on_attach = function(client, buffer)
-      vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, {noremap = true})
+      vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, { noremap = true })
     end
   end,
 }
@@ -203,7 +175,7 @@ require('mason-lspconfig').setup_handlers({
         server = opts,
         tools = {
           on_initialized = function()
-            vim.api.nvim_create_autocmd({"BufWritePost", "BufEnter", "CursorHold", "InsertLeave"}, {
+            vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
               pattern = { "*.rs" },
               callback = function()
                 local _, _ = pcall(vim.lsp.codelens.refresh)
@@ -255,12 +227,4 @@ vim.api.nvim_create_autocmd('VimEnter', {
   command = 'if argc() == 0 && getcwd() == $HOME | e notes.txt | endif'
 })
 
--- Stays last
-require('material').setup({
-  plugins = {
-    "dap", "lspsaga", "nvim-cmp", "nvim-navic",
-    "nvim-tree", "trouble", "which-key", "indent-blankline"
-  }
-})
-vim.g.material_style = 'deep ocean'
 vim.cmd 'colorscheme material'

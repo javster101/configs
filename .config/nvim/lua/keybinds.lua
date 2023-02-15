@@ -48,7 +48,7 @@ out.load_keybinds = function()
         [']'] = { '<cmd>Lspsaga diagnostic_jump_next<CR>', "Next diagnostic" },
         ['['] = { '<cmd>Lspsaga diagnostic_jump_prev<CR>', "Previous diagnostic" },
       },
-      f = { '<cmd>lua vim.lsp.buf.formatting_sync()<CR>', "Format" },
+      f = { '<cmd>lua vim.lsp.buf.format()<CR>', "Format" },
       k = { '<cmd>Lspsaga hover_doc ++keep<CR>', "Open and keep hover doc" },
     }
   })

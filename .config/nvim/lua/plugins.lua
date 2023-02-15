@@ -1,126 +1,141 @@
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+local lazypath = vim.fn.stdpath('data') .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
 end
-local packer_bootstrap = ensure_packer()
+vim.opt.rtp:prepend(lazypath)
 
-return require('packer').startup(function()
-  use 'wbthomason/packer.nvim'
-
+require('lazy').setup({
   -- Looks/Tools
-  use {
+  {
     'akinsho/bufferline.nvim',
+    opts   = {
+      options = {
+        diagnostics = 'nvim_lsp'
+      }
+    },
+    config = true
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'SmiteshP/nvim-navic'
+    },
     config = function()
-      require('bufferline').setup {
+      local navic = require('nvim-navic')
+      require('lualine').setup {
         options = {
-          diagnostics = "nvim_lsp"
+          theme = 'material',
+          globalstatus = true
+        },
+        sections = {
+          lualine_c = {
+            { navic.get_location, cond = navic.is_available },
+          }
         }
       }
     end
-  }
-  use 'nvim-lualine/lualine.nvim'
-  use 'marko-cerovac/material.nvim' -- setup done last in init.lua
-  use {
+  },
+  {
+    'marko-cerovac/material.nvim',
+    config = function()
+      require('material').setup({
+        plugins = {
+          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic',
+          'nvim-tree', 'trouble', 'which-key', 'indent-blankline'
+        }
+      })
+      vim.g.material_style = 'deep ocean'
+    end
+  },
+  {
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup()
     end
-  }
-  use 'kyazdani42/nvim-web-devicons'
-  use { 'nvim-tree/nvim-tree.lua',
-    config = function()
-      require('nvim-tree').setup {
-        respect_buf_cwd = true,
-        update_cwd = true,
-        update_focused_file = {
-          enable = true,
-          update_cwd = true
-        },
-      }
-    end
-  }
-  use 'rcarriga/nvim-notify'
-  use {
+  },
+  'kyazdani42/nvim-web-devicons',
+  { 'nvim-tree/nvim-tree.lua',
+    opts = {
+      respect_buf_cwd = true,
+      update_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_cwd = true
+      },
+    },
+    config = true
+  },
+  'rcarriga/nvim-notify',
+  {
     'NvChad/nvterm',
-    config = function()
-      require('nvterm').setup()
-    end
-  }
-  use {
+    config = true
+  },
+  {
     'folke/which-key.nvim',
-    config = function()
-      require('which-key').setup()
-    end
-  }
+    config = true
+  },
 
   -- LSP plugins
-  use 'neovim/nvim-lspconfig'
-  use {
+  'neovim/nvim-lspconfig',
+  {
     'williamboman/mason.nvim',
-    config = function()
-      require('mason').setup()
-    end
-  }
-  use {
+    config = true
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
-    config = function()
-      require('mason-lspconfig').setup()
-    end
-  }
-  use {
+    config = true
+  },
+  {
     'glepnir/lspsaga.nvim',
-    config = function()
-      require('lspsaga').setup({})
-    end
-  }
+    config = true
+  },
 
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'ray-x/cmp-treesitter'
-  use 'hrsh7th/nvim-cmp'
-  use 'L3MON4D3/LuaSnip'
-  use 'saadparwaiz1/cmp_luasnip'
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'ray-x/cmp-treesitter',
+  'hrsh7th/nvim-cmp',
+  'L3MON4D3/LuaSnip',
+  'saadparwaiz1/cmp_luasnip',
 
-  use {
+  {
     'folke/trouble.nvim',
-    config = function()
-      require('trouble').setup {
-        position = "left"
-      }
-    end
-  }
-  use {
+    opts = {
+      position = 'left'
+    },
+    config = true
+  },
+  {
     'j-hui/fidget.nvim',
-    config = function()
-      require('fidget').setup()
-    end
-  }
-  use 'stevearc/dressing.nvim'
-  use 'SmiteshP/nvim-navic'
+    config = true
+  },
+  'stevearc/dressing.nvim',
+  {
+    'SmiteshP/nvim-navic',
+    config = true
+  },
 
   --DAP plugins
-  use 'mfussenegger/nvim-dap'
-  use {
+  'mfussenegger/nvim-dap',
+  {
     'rcarriga/nvim-dap-ui',
     config = function()
       require('dapui').setup()
     end
-  }
-  use {
+  },
+  {
     'theHamsta/nvim-dap-virtual-text',
-    config = function()
-      require('nvim-dap-virtual-text').setup()
-    end
-  }
+    config = true
+  },
 
-  use {
+  {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = function()
@@ -135,70 +150,95 @@ return require('packer').startup(function()
         },
       }
     end
-  }
-  use 'nvim-lua/plenary.nvim'
+  },
+  'nvim-lua/plenary.nvim',
 
   -- Telescope plugins
-  use 'nvim-telescope/telescope.nvim'
-  use 'nvim-telescope/telescope-dap.nvim'
-  use { 'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-
+  'nvim-telescope/telescope-dap.nvim',
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+      "nvim-telescope/telescope-dap.nvim",
+      'nvim-telescope/telescope-fzf-native.nvim'
+    },
+    config = function()
+      require('telescope').setup {
+        extensions = {
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          }
+        }
+      }
+      require('telescope').load_extension('fzf')
+      require('telescope').load_extension('dap')
+    end
+  },
   -- Language LSPs/other
-  use 'mfussenegger/nvim-jdtls'
-  use 'scalameta/nvim-metals'
-  use {
+  'mfussenegger/nvim-jdtls',
+  'scalameta/nvim-metals',
+  {
     'Shatur/neovim-cmake',
     config = function()
       require('cmake').setup({})
     end
-  }
-  use 'simrat39/rust-tools.nvim'
-  use {
+  },
+  'simrat39/rust-tools.nvim',
+  {
     'mfussenegger/nvim-dap-python',
     config = function()
       require('dap-python').setup()
     end
-  }
+  },
 
   -- Editing
-  use 'lukas-reineke/indent-blankline.nvim'
-  use {
+  'lukas-reineke/indent-blankline.nvim',
+  {
     'NMAC427/guess-indent.nvim',
-    config = function()
-      require('guess-indent').setup {
-        auto_cmd = true,
-        buftype_exclude = {
-          "help",
-          "nofile",
-          "terminal",
-          "prompt",
-        },
-      }
-    end
-  }
-  use {
+    opts = {
+      auto_cmd = true,
+      buftype_exclude = {
+        "help",
+        "nofile",
+        "terminal",
+        "prompt",
+      },
+    },
+    config = true
+  },
+  {
     'windwp/nvim-autopairs',
-    config = function()
-      require('nvim-autopairs').setup()
-    end
-  }
-  use {
+    config = true
+  },
+  {
     'kevinhwang91/nvim-ufo',
-    requires = 'kevinhwang91/promise-async',
-    config = function ()
+    dependencies = {
+      'kevinhwang91/promise-async'
+    },
+    config = function()
       require('ufo').setup()
     end
-  }
-  use {
+  },
+  {
     'ggandor/leap.nvim',
     config = function()
       require('leap').add_default_mappings()
     end
-  }
-  use 'tpope/vim-repeat'
-  
-  if packer_boostrap then
-    require('packer').sync()
-  end
-end)
+  },
+  {
+    'chentoast/marks.nvim',
+    config = true
+  },
+  'tpope/vim-surround',
+  'tpope/vim-repeat',
+  {
+    'TimUntersberger/neogit',
+    config = true
+  },
+})
