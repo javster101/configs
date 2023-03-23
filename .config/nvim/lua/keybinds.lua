@@ -8,6 +8,7 @@ out.load_keybinds = function()
 
   wk.register({
     g = {
+      b = { '<cmd>BufferLinePick<CR>', "Go to buffer"},
       d = { '<cmd>lua vim.lsp.buf.definition()<CR>', "Go to definition" },
       D = { '<cmd>lua vim.lsp.buf.declaration()<CR>', "Go to declaration" },
       p = { '<cmd>Lspsaga peek_definition<CR>', "Peek definition" },

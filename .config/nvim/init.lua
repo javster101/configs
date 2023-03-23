@@ -92,6 +92,7 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<C-e>'] = cmp.mapping.abort(),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -148,6 +149,7 @@ local enhance_server_opts = {
     end
   end,
 }
+
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.foldingRange = {
@@ -208,6 +210,11 @@ dap.adapters.codelldb = {
   host = '127.0.0.1',
   port = 13000
 }
+
+
+numbers = function(opts)
+  return string.format('%s.%s', opts.lower(opts.id), opts.lower(opts.ordinal))
+end,
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'scala,sbt',

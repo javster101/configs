@@ -10,14 +10,25 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-
 require('lazy').setup({
+  -- Plenary
+  'nvim-lua/plenary.nvim',
+
   -- Looks/Tools
   {
     'akinsho/bufferline.nvim',
     opts   = {
       options = {
-        diagnostics = 'nvim_lsp'
+        diagnostics_indicator = function(count, level, diagnostics_dict, context)
+          local icon = level:match("error") and " " or " "
+          return " " .. icon .. count
+        end,
+        diagnostics = 'nvim_lsp',
+        offsets = {
+          {
+            filetype = 'NvimTree'
+          }
+        }
       }
     },
     config = true
@@ -47,8 +58,8 @@ require('lazy').setup({
     config = function()
       require('material').setup({
         plugins = {
-          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic',
-          'nvim-tree', 'trouble', 'which-key', 'indent-blankline'
+          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic', 'nvim-tree', 'neogit', 'gitsigns',
+          'trouble', 'which-key', 'indent-blankline', 'nvim-web-devicons'
         }
       })
       vim.g.material_style = 'deep ocean'
@@ -104,12 +115,23 @@ require('lazy').setup({
   'hrsh7th/nvim-cmp',
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
-
   {
     'folke/trouble.nvim',
     opts = {
       position = 'left'
     },
+    config = true
+  },
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    opts = function()
+      return {
+        sources = {
+          require('null-ls').builtins.code_actions.gitsigns,
+          require('null-ls').builtins.hover.printenv,
+        }
+      }
+    end,
     config = true
   },
   {
@@ -151,7 +173,6 @@ require('lazy').setup({
       }
     end
   },
-  'nvim-lua/plenary.nvim',
 
   -- Telescope plugins
   'nvim-telescope/telescope-dap.nvim',
@@ -180,20 +201,23 @@ require('lazy').setup({
       require('telescope').load_extension('dap')
     end
   },
+
   -- Language LSPs/other
   'mfussenegger/nvim-jdtls',
   'scalameta/nvim-metals',
   {
     'Shatur/neovim-cmake',
-    config = function()
-      require('cmake').setup({})
-    end
+    config = true
+  },
+  {
+    'folke/neoconf.nvim',
+    config = true
   },
   'simrat39/rust-tools.nvim',
   {
     'mfussenegger/nvim-dap-python',
     config = function()
-      require('dap-python').setup()
+      require('dap-python').setup('/usr/bin/python')
     end
   },
 
@@ -235,10 +259,26 @@ require('lazy').setup({
     'chentoast/marks.nvim',
     config = true
   },
-  'tpope/vim-surround',
+  {
+    'kylechui/nvim-surround',
+    config = true
+  },
   'tpope/vim-repeat',
+
+  -- Git
+  'sindrets/diffview.nvim',
   {
     'TimUntersberger/neogit',
+    opts = {
+      disable_signs = false
+    },
+    config = true
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      attach_to_untracked = false,
+    },
     config = true
   },
 })
