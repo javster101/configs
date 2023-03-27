@@ -214,12 +214,7 @@ require('lazy').setup({
     config = true
   },
   'simrat39/rust-tools.nvim',
-  {
-    'mfussenegger/nvim-dap-python',
-    config = function()
-      require('dap-python').setup('/usr/bin/python')
-    end
-  },
+  'mfussenegger/nvim-dap-python',
 
   -- Editing
   'lukas-reineke/indent-blankline.nvim',

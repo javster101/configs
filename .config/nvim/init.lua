@@ -136,6 +136,11 @@ local enhance_server_opts = {
     --   "--completion-style=detailed"
     -- }
   end,
+  ["pyright"] = function(opts)
+    opts.on_attach = function (client, buffer)
+      require('dap-python').setup('/usr/bin/python')
+    end
+  end,
   ["rust_analyzer"] = function(opts)
     opts.settings = {
       ["rust-analyzer"] = {
