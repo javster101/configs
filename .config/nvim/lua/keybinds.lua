@@ -40,7 +40,8 @@ out.load_keybinds = function()
     f = {
       f = { '<cmd>Telescope find_files<CR>', "Find files" },
       g = { '<cmd>Telescope live_grep<CR>', "Grep" },
-      s = { '<cmd>Telescope lsp_workspace_symbols<CR>', "Find symbols" }
+      s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
+      b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
     },
     ['<space>'] = {
       e = {

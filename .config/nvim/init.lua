@@ -141,6 +141,25 @@ local enhance_server_opts = {
       require('dap-python').setup('/usr/bin/python')
     end
   end,
+  ["jdtls"] = function (opts)
+--    local extendedClientCapabilities = require 'jdtls'.extendedClientCapabilities
+--    extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+--    opts.init_options = {
+--      extendedClientCapabilities = extendedClientCapabilities
+--    }
+
+    opts.on_attach = function(client, bufnr)
+     -- require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
+      require('jdtls.setup').add_commands()
+    end
+
+    opts.flags = {
+      server_side_fuzzy_completion = true,
+      allow_incremental_sync = true
+    }
+
+    local workspace_folder = os.getenv('HOME') .. "/.cache/jdtls/workspaces/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+  end,
   ["rust_analyzer"] = function(opts)
     opts.settings = {
       ["rust-analyzer"] = {
@@ -174,7 +193,8 @@ require('mason-lspconfig').setup_handlers({
     end
 
     if server == 'jdtls' then
-      return
+     -- require('jdtls').start_or_attach(opts)
+     -- return
     end
 
     if server == 'rust_analyzer' then
@@ -225,13 +245,6 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'scala,sbt',
   callback = function()
     require('scala').load_language()
-  end
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'java',
-  callback = function()
-    require('java').load_language()
   end
 })
 
