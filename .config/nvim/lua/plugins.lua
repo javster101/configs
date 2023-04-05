@@ -34,20 +34,32 @@ require('lazy').setup({
     config = true
   },
   {
+    'SmiteshP/nvim-navic',
+    config = true
+  },
+  {
     'nvim-lualine/lualine.nvim',
     dependencies = {
       'SmiteshP/nvim-navic'
     },
     config = function()
       local navic = require('nvim-navic')
+      local function get_navic()
+        if navic.is_available() then
+          return navic.get_location()
+        else
+          return
+        end
+      end
       require('lualine').setup {
         options = {
           theme = 'material',
           globalstatus = true
         },
-        sections = {
+         sections = {
           lualine_c = {
-            { navic.get_location, cond = navic.is_available },
+            'filename',
+           --  { get_navic }
           }
         }
       }
@@ -204,6 +216,7 @@ require('lazy').setup({
 
   -- Language LSPs/other
   'mfussenegger/nvim-jdtls',
+  'jbyuki/nabla.nvim',
   'scalameta/nvim-metals',
   {
     'Shatur/neovim-cmake',

@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.o.mouse = 'a'
 vim.o.ttyfast = true
 vim.o.expandtab = true
@@ -126,39 +129,30 @@ cmp.setup({
 
 local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 
+local general_attach = function (client, buffer)
+  if client.server_capabilities.documentSymbolProvider then
+    require('nvim-navic').attach(client, buffer)
+  end
+end
+
 local enhance_server_opts = {
-  ["clangd"] = function(opts)
-    -- opts.cmd = {
-    --   "clangd",
-    --   "--background-index",
-    --   "--suggest-missing-includes",
-    --   "--clang-tidy",
-    --   "--completion-style=detailed"
-    -- }
-  end,
   ["pyright"] = function(opts)
     opts.on_attach = function (client, buffer)
       require('dap-python').setup('/usr/bin/python')
+      general_attach(client, buffer)
     end
   end,
   ["jdtls"] = function (opts)
---    local extendedClientCapabilities = require 'jdtls'.extendedClientCapabilities
---    extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
---    opts.init_options = {
---      extendedClientCapabilities = extendedClientCapabilities
---    }
-
-    opts.on_attach = function(client, bufnr)
+    opts.on_attach = function(client, buffer)
      -- require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
       require('jdtls.setup').add_commands()
+      general_attach(client, buffer)
     end
 
     opts.flags = {
       server_side_fuzzy_completion = true,
       allow_incremental_sync = true
     }
-
-    local workspace_folder = os.getenv('HOME') .. "/.cache/jdtls/workspaces/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
   end,
   ["rust_analyzer"] = function(opts)
     opts.settings = {
@@ -170,6 +164,7 @@ local enhance_server_opts = {
     }
     opts.on_attach = function(client, buffer)
       vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, { noremap = true })
+      general_attach(client, buffer)
     end
   end,
 }
@@ -182,19 +177,14 @@ capabilities.textDocument.foldingRange = {
 }
 
 local opts = {
+  on_attach = general_attach,
   capabilities = capabilities
 }
 
 require('mason-lspconfig').setup_handlers({
   function(server)
-
     if enhance_server_opts[server] then
       enhance_server_opts[server](opts)
-    end
-
-    if server == 'jdtls' then
-     -- require('jdtls').start_or_attach(opts)
-     -- return
     end
 
     if server == 'rust_analyzer' then
@@ -249,7 +239,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('VimEnter', {
-  command = 'if argc() == 0 && getcwd() == $HOME | e notes.txt | endif'
+  command = 'if argc() == 0 && getcwd() == $HOME | e Documents/Sync/notes.mk | endif'
 })
 
 vim.cmd 'colorscheme material'

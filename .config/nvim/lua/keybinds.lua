@@ -37,13 +37,18 @@ out.load_keybinds = function()
       h = { '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', "Open horizontal terminal" },
       v = { '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', "Open vertical terminal" }
     },
-    f = {
-      f = { '<cmd>Telescope find_files<CR>', "Find files" },
-      g = { '<cmd>Telescope live_grep<CR>', "Grep" },
-      s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
-      b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
-    },
     ['<space>'] = {
+      l = { '<cmd>lua require("nabla").popup() <CR>', 'Render LaTEX'},
+      t = {
+        g = { '<cmd>Telescope live_grep<CR>', "Grep" },
+        s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
+        b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
+      },
+      f = {
+        b = { '<cmd>lua vim.lsp.buf.format()<CR>', "Format" },
+        t = { '<cmd>NvimTreeToggle<CR>', 'Open file browser' },
+        f = { '<cmd>NvimTreeFindFile<CR>', 'Open file browser to current file' },
+      },
       e = {
         l = { '<cmd>Lspsaga show_line_diagnostics<CR>', "Line diagnostic" },
         b = { '<cmd>Lspsaga show_buf_diagnostics<CR>', "Buffer diagnostic" },
@@ -51,7 +56,6 @@ out.load_keybinds = function()
         [']'] = { '<cmd>Lspsaga diagnostic_jump_next<CR>', "Next diagnostic" },
         ['['] = { '<cmd>Lspsaga diagnostic_jump_prev<CR>', "Previous diagnostic" },
       },
-      f = { '<cmd>lua vim.lsp.buf.format()<CR>', "Format" },
       K = { '<cmd>Lspsaga hover_doc ++keep<CR>', "Open and keep hover doc" },
       r = {
         n = { '<cmd>Lspsaga rename<CR>', "Rename" },
