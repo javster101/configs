@@ -15,31 +15,29 @@ out.load_keybinds = function()
       m = { '<cmd>lua vim.lsp.buf.implementation()<CR>', "Go to implementation" },
       r = { '<cmd>Telescope lsp_references<CR>', "Go to references" },
       u = { '<cmd>Lspsaga lsp_finder<CR>', "Find usages" },
-    },
-    c = {
-      a = { '<cmd>lua vim.lsp.buf.code_action()<CR>', "Code action" },
-      l = { '<cmd>lua vim.lsp.codelens.run()<CR>', "Run codelens" },
       i = { '<cmd>Lspsaga incoming_calls<CR>', "Go to incoming calls" },
       o = { '<cmd>Lspsaga outgoing_calls<CR>', "Go to outgoing calls" }
     },
-    d = {
-      c = { '<cmd>lua require("dap").continue()<CR>', "Continue" },
-      K = { '<cmd>lua require("dap.ui.widgets").hover()<CR>', "Debug hover" },
-      B = { '<cmd>lua require("dap").toggle_breakpoint()<CR>', "Toggle breakpoint" },
-      o = { '<cmd>lua require("dap").step_over()<CR>', "Step over" },
-      i = { '<cmd>lua require("dap").step_into()<CR>', "Step into" },
-      r = { '<cmd>Telescope dap configurations<CR>', "Run previous" },
-      ui = { '<cmd>lua require("dapui").toggle()<CR>', "Toggle" },
-      p = { '<cmd>lua require("dap").repl.toggle()<CR>', "Toggle REPL" },
-    },
-    t = {
-      f = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal" },
-      h = { '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', "Open horizontal terminal" },
-      v = { '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', "Open vertical terminal" }
-    },
     ['<space>'] = {
-      l = { '<cmd>lua require("nabla").popup() <CR>', 'Render LaTEX'},
+      c = {
+        a = { '<cmd>lua vim.lsp.buf.code_action()<CR>', "Code action" },
+        l = { '<cmd>lua vim.lsp.codelens.run()<CR>', "Run codelens" },
+      },
+      d = {
+        c = { '<cmd>lua require("dap").continue()<CR>', "Continue" },
+        K = { '<cmd>lua require("dap.ui.widgets").hover()<CR>', "Debug hover" },
+        B = { '<cmd>lua require("dap").toggle_breakpoint()<CR>', "Toggle breakpoint" },
+        o = { '<cmd>lua require("dap").step_over()<CR>', "Step over" },
+        i = { '<cmd>lua require("dap").step_into()<CR>', "Step into" },
+        r = { '<cmd>Telescope dap configurations<CR>', "Run previous" },
+        ui = { '<cmd>lua require("dapui").toggle()<CR>', "Toggle" },
+        p = { '<cmd>lua require("dap").repl.toggle()<CR>', "Toggle REPL" },
+      },
+      l = { '<cmd>lua require("nabla").popup() <CR>', 'Render LaTEX' },
       t = {
+        f = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal" },
+        h = { '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', "Open horizontal terminal" },
+        v = { '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', "Open vertical terminal" },
         g = { '<cmd>Telescope live_grep<CR>', "Grep" },
         s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
         b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }

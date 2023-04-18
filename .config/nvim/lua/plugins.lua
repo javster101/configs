@@ -153,6 +153,11 @@ require('lazy').setup({
   'stevearc/dressing.nvim',
   {
     'SmiteshP/nvim-navic',
+    opts = {
+      select = {
+        enabled = false
+      }
+    },
     config = true
   },
 
@@ -188,6 +193,7 @@ require('lazy').setup({
 
   -- Telescope plugins
   'nvim-telescope/telescope-dap.nvim',
+  'nvim-telescope/telescope-ui-select.nvim',
   {
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
@@ -211,6 +217,7 @@ require('lazy').setup({
       }
       require('telescope').load_extension('fzf')
       require('telescope').load_extension('dap')
+      require('telescope').load_extension('ui-select')
     end
   },
 

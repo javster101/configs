@@ -119,7 +119,7 @@ cmp.setup({
     end, { "i", "s" }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
+ --   { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'treesitter' },
     { name = 'luasnip' },
@@ -136,34 +136,20 @@ local general_attach = function (client, buffer)
 end
 
 local enhance_server_opts = {
-  ["pyright"] = function(opts)
-    opts.on_attach = function (client, buffer)
-      require('dap-python').setup('/usr/bin/python')
-      general_attach(client, buffer)
-    end
-  end,
-  ["jdtls"] = function (opts)
-    opts.on_attach = function(client, buffer)
-     -- require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
-      require('jdtls.setup').add_commands()
-      general_attach(client, buffer)
-    end
-
-    opts.flags = {
-      server_side_fuzzy_completion = true,
-      allow_incremental_sync = true
-    }
-  end,
-  ["rust_analyzer"] = function(opts)
+  ["lua_ls"] = function(opts)
     opts.settings = {
-      ["rust-analyzer"] = {
-        lens = {
-          enable = true,
+      Lua = {
+        diagnostics = {
+          globals = {
+            'vim'
+          }
         }
       }
     }
-    opts.on_attach = function(client, buffer)
-      vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, { noremap = true })
+  end,
+  ["pyright"] = function(opts)
+    opts.on_attach = function (client, buffer)
+      require('dap-python').setup('/usr/bin/python')
       general_attach(client, buffer)
     end
   end,
@@ -176,46 +162,95 @@ capabilities.textDocument.foldingRange = {
   lineFoldingOnly = true
 }
 
-local opts = {
-  on_attach = general_attach,
-  capabilities = capabilities
-}
 
 require('mason-lspconfig').setup_handlers({
   function(server)
+    local opts = {
+      on_attach = general_attach,
+      capabilities = capabilities
+    }
+
     if enhance_server_opts[server] then
       enhance_server_opts[server](opts)
     end
 
-    if server == 'rust_analyzer' then
-      require('rust-tools').setup({
-        server = opts,
-        tools = {
-          on_initialized = function()
-            vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
-              pattern = { "*.rs" },
-              callback = function()
-                local _, _ = pcall(vim.lsp.codelens.refresh)
-              end,
-            })
-          end,
-          runnables = {
-            use_telescope = true
-          },
-        },
-        hover_actions = {
-          auto_focus = true,
-        },
-        dap = {
-          adapter = require('rust-tools.dap').get_codelldb_adapter(
-            mason_path .. '/bin/codelldb', mason_path .. '/packages/codelldb/extension/lldb/lib/liblldb.so'
-          )
-        }
-      })
-      return
-    end
-
     require('lspconfig')[server].setup(opts)
+  end,
+  ['jdtls'] = function ()
+    local opts = {
+      capabilities = capabilities,
+      init_options = {
+        extendedClientCapabilities = require('jdtls').extendedClientCapabilities
+      },
+      settings = {
+        java = {
+          signatureHelp = { enabled = true }
+        }
+      },
+      cmd = {
+        'jdtls',
+        '--jvm-arg=-Xmx8G',
+        '-configuration', '/var/home/javst/.cache/jdtls/config',
+        '-data', '/var/home/javst/.cache/jdtls/workspace'
+      },
+      root_dir = vim.fs.dirname(vim.fs.find({'gradlew', 'build.gradle', '.git', 'mvnw'}, {upward = true})[1]),
+      flags = {
+        allow_incremental_sync = true
+      },
+      on_attach = function(client, buffer)
+        -- require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
+        require('jdtls.setup').add_commands()
+        general_attach(client, buffer)
+      end
+    }
+
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'java',
+      callback = function()
+        require('jdtls').start_or_attach(opts)
+      end
+    })
+  end,
+  ['rust_analyzer'] = function ()
+    local opts = {
+      capabilities = capabilities,
+      settings = {
+        ["rust-analyzer"] = {
+          lens = {
+            enable = true,
+          }
+        }
+      },
+      on_attach = function(client, buffer)
+        vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, { noremap = true })
+        general_attach(client, buffer)
+      end
+    }
+
+    require('rust-tools').setup({
+      server = opts,
+      tools = {
+        on_initialized = function()
+          vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
+            pattern = { "*.rs" },
+            callback = function()
+              local _, _ = pcall(vim.lsp.codelens.refresh)
+            end,
+          })
+        end,
+        runnables = {
+          use_telescope = true
+        },
+      },
+      hover_actions = {
+        auto_focus = true,
+      },
+      dap = {
+        adapter = require('rust-tools.dap').get_codelldb_adapter(
+          mason_path .. '/bin/codelldb', mason_path .. '/packages/codelldb/extension/lldb/lib/liblldb.so'
+        )
+      }
+    })
   end
 })
 
