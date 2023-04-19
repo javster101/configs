@@ -12,6 +12,7 @@ vim.o.splitbelow = true
 vim.o.signcolumn = 'yes'
 vim.o.updatetime = 100
 vim.o.syntax = true
+vim.o.scrolloff = 5
 
 vim.o.foldcolumn = '1'
 vim.o.foldlevel = 99
