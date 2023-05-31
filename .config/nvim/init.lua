@@ -65,6 +65,8 @@ vim.g.symbols_outline = {
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
 
+vim.wo.stl = require('lspsaga.symbolwinbar'):get_winbar()
+
 local luasnip = require("luasnip")
 local cmp = require('cmp')
 
@@ -132,9 +134,6 @@ cmp.setup({
 local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 
 local general_attach = function (client, buffer)
-  if client.server_capabilities.documentSymbolProvider then
-    require('nvim-navic').attach(client, buffer)
-  end
 end
 
 local enhance_server_opts = {

@@ -34,43 +34,26 @@ require('lazy').setup({
     config = true
   },
   {
-    'SmiteshP/nvim-navic',
-    config = true
-  },
-  {
     'nvim-lualine/lualine.nvim',
-    dependencies = {
-      'SmiteshP/nvim-navic'
-    },
-    config = function()
-      local navic = require('nvim-navic')
-      local function get_navic()
-        if navic.is_available() then
-          return navic.get_location()
-        else
-          return
-        end
-      end
-      require('lualine').setup {
-        options = {
-          theme = 'material',
-          globalstatus = true
-        },
-        sections = {
-          lualine_c = {
-            'filename',
-            --  { get_navic }
-          }
+    opts = {
+      options = {
+        theme = 'material',
+        globalstatus = true
+      },
+      sections = {
+        lualine_c = {
+          'filename'
         }
       }
-    end
+    },
+    config = true
   },
   {
     'marko-cerovac/material.nvim',
     config = function()
       require('material').setup({
         plugins = {
-          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic', 'neogit', 'gitsigns',
+          'dap', 'lspsaga', 'nvim-cmp', 'neogit', 'gitsigns',
           'trouble', 'which-key', 'indent-blankline', 'nvim-web-devicons'
         }
       })
@@ -271,7 +254,20 @@ require('lazy').setup({
   {
     'echasnovski/mini.nvim',
     config = function()
-      require('mini.surround').setup()
+      require('mini.surround').setup({
+        mappings = {
+          add = ' sa',      -- Add surrounding in Normal and Visual modes
+          delete = ' sd',   -- Delete surrounding
+          find = ' sf',     -- Find surrounding (to the right)
+          find_left = ' sF', -- Find surrounding (to the left)
+          highlight = ' sh', -- Highlight surrounding
+          replace = ' sr',  -- Replace surrounding
+          update_n_lines = ' sn', -- Update `n_lines`
+
+          suffix_last = 'l', -- Suffix to search with "prev" method
+          suffix_next = 'n', -- Suffix to search with "next" method
+        },
+      })
     end
   },
   'tpope/vim-repeat',

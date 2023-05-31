@@ -9,33 +9,32 @@ out.load_keybinds = function()
   wk.register({
     g = {
       b = { '<cmd>BufferLinePick<CR>', "Go to buffer" },
-      d = { '<cmd>lua vim.lsp.buf.definition()<CR>', "Go to definition" },
-      D = { '<cmd>lua vim.lsp.buf.declaration()<CR>', "Go to declaration" },
-      p = { '<cmd>Lspsaga peek_definition<CR>', "Peek definition" },
-      m = { '<cmd>lua vim.lsp.buf.implementation()<CR>', "Go to implementation" },
-      r = { '<cmd>Telescope lsp_references<CR>', "Go to references" },
+      d = { vim.lsp.buf.definition, "Go to definition" },
+      D = { vim.lsp.buf.declaration, "Go to declaration" },
+      m = { vim.lsp.buf.implementation, "Go to implementation" },
       u = { '<cmd>Lspsaga lsp_finder<CR>', "Find usages" },
+      p = { '<cmd>Lspsaga peek_definition<CR>', "Peek definition" },
+      -- r = { '<cmd>Telescope lsp_references<CR>', "Go to references" },
       i = { '<cmd>Lspsaga incoming_calls<CR>', "Go to incoming calls" },
       o = { '<cmd>Lspsaga outgoing_calls<CR>', "Go to outgoing calls" }
     },
     ['<space>'] = {
       c = {
-        a = { '<cmd>lua vim.lsp.buf.code_action()<CR>', "Code action" },
-        l = { '<cmd>lua vim.lsp.codelens.run()<CR>', "Run codelens" },
+        a = { vim.lsp.buf.code_action, "Code action" },
+        l = { vim.lsp.codelens.run, "Run codelens" },
       },
       d = {
-        c = { '<cmd>lua require("dap").continue()<CR>', "Continue" },
-        K = { '<cmd>lua require("dap.ui.widgets").hover()<CR>', "Debug hover" },
-        B = { '<cmd>lua require("dap").toggle_breakpoint()<CR>', "Toggle breakpoint" },
-        o = { '<cmd>lua require("dap").step_over()<CR>', "Step over" },
-        i = { '<cmd>lua require("dap").step_into()<CR>', "Step into" },
+        c = { require("dap").continue, "Continue" },
+        K = { require("dap.ui.widgets").hover, "Debug hover" },
+        B = { require("dap").toggle_breakpoint, "Toggle breakpoint" },
+        o = { require("dap").step_over, "Step over" },
+        i = { require("dap").step_into, "Step into" },
         r = { '<cmd>Telescope dap configurations<CR>', "Run previous" },
-        ui = { '<cmd>lua require("dapui").toggle()<CR>', "Toggle" },
-        p = { '<cmd>lua require("dap").repl.toggle()<CR>', "Toggle REPL" },
+        ui = { require("dapui").toggle, "Toggle" },
+        p = { require("dap").repl.toggle, "Toggle REPL" },
       },
-      l = { '<cmd>lua require("nabla").popup() <CR>', 'Render LaTEX' },
+      l = { require("nabla").popup, 'Render LaTEX' },
       t = {
-        f = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal" },
         h = { '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', "Open horizontal terminal" },
         v = { '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', "Open vertical terminal" },
         g = { '<cmd>Telescope live_grep<CR>', "Grep" },
@@ -43,7 +42,7 @@ out.load_keybinds = function()
         b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
       },
       f = {
-        b = { '<cmd>lua vim.lsp.buf.format()<CR>', "Format" },
+        b = { vim.lsp.buf.format, "Format" },
         t = { '<cmd>NvimTreeToggle<CR>', 'Open file browser' },
         f = { '<cmd>NvimTreeFindFile<CR>', 'Open file browser to current file' },
       },
@@ -59,7 +58,9 @@ out.load_keybinds = function()
         n = { '<cmd>Lspsaga rename<CR>', "Rename" },
       },
     },
-    K = { '<cmd>Lspsaga hover_doc<CR>', "Hover doc" }
+    K = { '<cmd>Lspsaga hover_doc<CR>', "Hover doc" },
+    ['-'] = { require("oil").open, "Open parent directory" },
+    ['<A-t>'] = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal", noremap = true, silent = true }
   })
 
 
