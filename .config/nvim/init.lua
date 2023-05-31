@@ -231,7 +231,7 @@ require('mason-lspconfig').setup_handlers({
       server = opts,
       tools = {
         on_initialized = function()
-          vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
+          vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufEnter', "CursorHold", "InsertLeave" }, {
             pattern = { "*.rs" },
             callback = function()
               local _, _ = pcall(vim.lsp.codelens.refresh)
@@ -264,7 +264,7 @@ dap.adapters.codelldb = {
 
 numbers = function(opts)
   return string.format('%s.%s', opts.lower(opts.id), opts.lower(opts.ordinal))
-end,
+end
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'scala,sbt',

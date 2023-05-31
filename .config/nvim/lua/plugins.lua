@@ -56,10 +56,10 @@ require('lazy').setup({
           theme = 'material',
           globalstatus = true
         },
-         sections = {
+        sections = {
           lualine_c = {
             'filename',
-           --  { get_navic }
+            --  { get_navic }
           }
         }
       }
@@ -70,7 +70,7 @@ require('lazy').setup({
     config = function()
       require('material').setup({
         plugins = {
-          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic', 'nvim-tree', 'neogit', 'gitsigns',
+          'dap', 'lspsaga', 'nvim-cmp', 'nvim-navic', 'neogit', 'gitsigns',
           'trouble', 'which-key', 'indent-blankline', 'nvim-web-devicons'
         }
       })
@@ -84,15 +84,8 @@ require('lazy').setup({
     end
   },
   'kyazdani42/nvim-web-devicons',
-  { 'nvim-tree/nvim-tree.lua',
-    opts = {
-      respect_buf_cwd = true,
-      update_cwd = true,
-      update_focused_file = {
-        enable = true,
-        update_cwd = true
-      },
-    },
+  {
+    'stevearc/oil.nvim',
     config = true
   },
   'rcarriga/nvim-notify',
@@ -181,7 +174,7 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup {
         ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
         highlight = {
-          enable = true, -- false will disable the whole extension
+          enable = true,          -- false will disable the whole extension
           additional_vim_regex_highlighting = false
         },
         indent = {
@@ -196,7 +189,8 @@ require('lazy').setup({
   'nvim-telescope/telescope-ui-select.nvim',
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+    build =
+    'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
   },
   {
     'nvim-telescope/telescope.nvim',
@@ -275,8 +269,10 @@ require('lazy').setup({
     config = true
   },
   {
-    'kylechui/nvim-surround',
-    config = true
+    'echasnovski/mini.nvim',
+    config = function()
+      require('mini.surround').setup()
+    end
   },
   'tpope/vim-repeat',
 
