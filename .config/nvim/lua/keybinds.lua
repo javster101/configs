@@ -19,6 +19,10 @@ out.load_keybinds = function()
       o = { '<cmd>Lspsaga outgoing_calls<CR>', "Go to outgoing calls" }
     },
     ['<space>'] = {
+      o = {
+        t = { '<cmd>ObsidianTemplate<CR>', "Insert template"},
+        ln = { '<cmd>ObsidianLinkNew<CR>', "Create from text"}
+      },
       c = {
         a = { vim.lsp.buf.code_action, "Code action" },
         l = { vim.lsp.codelens.run, "Run codelens" },

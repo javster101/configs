@@ -158,7 +158,9 @@ require('lazy').setup({
         ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
         highlight = {
           enable = true,          -- false will disable the whole extension
-          additional_vim_regex_highlighting = false
+          additional_vim_regex_highlighting = {
+            'markdown'
+          }
         },
         indent = {
           enable = true,
@@ -212,6 +214,29 @@ require('lazy').setup({
   },
   'simrat39/rust-tools.nvim',
   'mfussenegger/nvim-dap-python',
+  {
+    'epwalsh/obsidian.nvim',
+    lazy = true,
+    event = { 'BufReadPre /var/home/javst/Documents/Sync/DND/**.md'},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'hrsh7th/nvim-cmp',
+      'nvim-telescope/telescope.nvim',
+      'preservim/vim-markdown',
+    },
+    opts = {
+      dir = '~/Documents/Sync/DND/',
+      completion = {
+        nvim_cmp = true,
+      },
+      disable_frontmatter = true,
+      templates = {
+        subdir = "Templates",
+        date_format = "%Y-%m-%d-%a",
+        time_format = "%H:%M"
+      }
+    }
+  },
 
   -- Editing
   'lukas-reineke/indent-blankline.nvim',
