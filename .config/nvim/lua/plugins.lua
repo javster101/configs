@@ -31,7 +31,6 @@ require('lazy').setup({
         }
       }
     },
-    config = true
   },
   {
     'nvim-lualine/lualine.nvim',
@@ -40,13 +39,7 @@ require('lazy').setup({
         theme = 'material',
         globalstatus = true
       },
-      sections = {
-        lualine_c = {
-          'filename'
-        }
-      }
     },
-    config = true
   },
   {
     'marko-cerovac/material.nvim',
@@ -66,7 +59,7 @@ require('lazy').setup({
       require('colorizer').setup()
     end
   },
-  'kyazdani42/nvim-web-devicons',
+  'nvim-tree/nvim-web-devicons',
   {
     'stevearc/oil.nvim',
     config = true
@@ -79,6 +72,27 @@ require('lazy').setup({
   {
     'folke/which-key.nvim',
     config = true
+  },
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify'
+    },
+    opts = {
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true
+      }
+    }
   },
 
   -- LSP plugins
@@ -93,6 +107,10 @@ require('lazy').setup({
   },
   {
     'glepnir/lspsaga.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons'
+    },
     config = true
   },
 
@@ -120,21 +138,6 @@ require('lazy').setup({
         }
       }
     end,
-    config = true
-  },
-  {
-    'j-hui/fidget.nvim',
-    config = true
-  },
-  'stevearc/dressing.nvim',
-  {
-    'SmiteshP/nvim-navic',
-    opts = {
-      select = {
-        enabled = false
-      }
-    },
-    config = true
   },
 
   --DAP plugins
@@ -205,10 +208,6 @@ require('lazy').setup({
   'jbyuki/nabla.nvim',
   'scalameta/nvim-metals',
   {
-    'Shatur/neovim-cmake',
-    config = true
-  },
-  {
     'folke/neoconf.nvim',
     config = true
   },
@@ -251,7 +250,6 @@ require('lazy').setup({
         "prompt",
       },
     },
-    config = true
   },
   {
     'windwp/nvim-autopairs',
@@ -267,10 +265,26 @@ require('lazy').setup({
     end
   },
   {
-    'ggandor/leap.nvim',
-    config = function()
-      require('leap').add_default_mappings()
-    end
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {
+      modes = {
+        search = {
+          enabled = true,
+          highlight = {
+            backdrop = true
+          }
+        }
+      }
+    },
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump({
+        search = { max_length = 2 },
+        jump = { autojump = true }
+      }) end, desc = "Flash" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
   },
   {
     'chentoast/marks.nvim',
@@ -295,22 +309,20 @@ require('lazy').setup({
       })
     end
   },
-  'tpope/vim-repeat',
 
   -- Git
   'sindrets/diffview.nvim',
   {
-    'TimUntersberger/neogit',
+    'NeogitOrg/neogit',
+    dependencies = "nvim-lua/plenary.nvim",
     opts = {
       disable_signs = false
     },
-    config = true
   },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
       attach_to_untracked = false,
     },
-    config = true
   },
 })

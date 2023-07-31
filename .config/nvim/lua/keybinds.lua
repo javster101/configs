@@ -19,10 +19,6 @@ out.load_keybinds = function()
       o = { '<cmd>Lspsaga outgoing_calls<CR>', "Go to outgoing calls" }
     },
     ['<space>'] = {
-      o = {
-        t = { '<cmd>ObsidianTemplate<CR>', "Insert template"},
-        ln = { '<cmd>ObsidianLinkNew<CR>', "Create from text"}
-      },
       c = {
         a = { vim.lsp.buf.code_action, "Code action" },
         l = { vim.lsp.codelens.run, "Run codelens" },
@@ -39,8 +35,8 @@ out.load_keybinds = function()
       },
       l = { require("nabla").popup, 'Render LaTEX' },
       t = {
-        h = { '<cmd>lua require("nvterm.terminal").toggle "horizontal"<CR>', "Open horizontal terminal" },
-        v = { '<cmd>lua require("nvterm.terminal").toggle "vertical"<CR>', "Open vertical terminal" },
+        h = { function() require("nvterm.terminal").toggle("horizontal") end, "Open horizontal terminal" },
+        v = { function() require("nvterm.terminal").toggle("vertical") end, "Open vertical terminal" },
         g = { '<cmd>Telescope live_grep<CR>', "Grep" },
         s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
         b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
