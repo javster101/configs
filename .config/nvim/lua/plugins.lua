@@ -11,10 +11,28 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
-  -- Plenary
+  -- Core 
   'nvim-lua/plenary.nvim',
+  {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+        highlight = {
+          enable = true,          -- false will disable the whole extension
+          additional_vim_regex_highlighting = {
+            'markdown'
+          }
+        },
+        indent = {
+          enable = true,
+        },
+      }
+    end
+  },
 
-  -- Looks/Tools
+  -- Looks
   {
     'akinsho/bufferline.nvim',
     opts   = {
@@ -60,19 +78,9 @@ require('lazy').setup({
     end
   },
   'nvim-tree/nvim-web-devicons',
-  {
-    'stevearc/oil.nvim',
-    config = true
-  },
   'rcarriga/nvim-notify',
-  {
-    'NvChad/nvterm',
-    config = true
-  },
-  {
-    'folke/which-key.nvim',
-    config = true
-  },
+
+  -- Tools
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
@@ -93,6 +101,18 @@ require('lazy').setup({
         command_palette = true
       }
     }
+  },
+  {
+    'stevearc/oil.nvim',
+    config = true
+  },
+  {
+    'NvChad/nvterm',
+    config = true
+  },
+  {
+    'folke/which-key.nvim',
+    config = true
   },
 
   -- LSP plugins
@@ -153,24 +173,6 @@ require('lazy').setup({
     config = true
   },
 
-  {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-        highlight = {
-          enable = true,          -- false will disable the whole extension
-          additional_vim_regex_highlighting = {
-            'markdown'
-          }
-        },
-        indent = {
-          enable = true,
-        },
-      }
-    end
-  },
 
   -- Telescope plugins
   'nvim-telescope/telescope-dap.nvim',
@@ -203,7 +205,7 @@ require('lazy').setup({
     end
   },
 
-  -- Language LSPs/other
+  -- Language LSPs
   'mfussenegger/nvim-jdtls',
   'jbyuki/nabla.nvim',
   'scalameta/nvim-metals',
@@ -293,6 +295,7 @@ require('lazy').setup({
   {
     'echasnovski/mini.nvim',
     config = function()
+      require('mini.ai').setup()
       require('mini.surround').setup({
         mappings = {
           add = ' sa',      -- Add surrounding in Normal and Visual modes
@@ -307,7 +310,10 @@ require('lazy').setup({
           suffix_next = 'n', -- Suffix to search with "next" method
         },
       })
-    end
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects'
+    }
   },
 
   -- Git
