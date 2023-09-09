@@ -65,7 +65,7 @@ vim.g.symbols_outline = {
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
 
-vim.wo.stl = require('lspsaga.symbol.winbar'):get_bar()
+vim.wo.stl = require('lspsaga.symbolwinbar'):get_winbar()
 
 local luasnip = require("luasnip")
 local cmp = require('cmp')
@@ -144,14 +144,14 @@ end
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
-    opts.capabilities.offsetEncoding = 'utf-8'
-    opts.cmd = {
-      "clangd",
-      "--background-index",
-      "--suggest-missing-includes",
-      --  "--clang-tidy",
-      "--completion-style=detailed"
-    }
+    -- opts.capabilities.offsetEncoding = 'utf-8'
+    -- opts.cmd = {
+    --   "clangd",
+    --   "--background-index",
+    --   "--suggest-missing-includes",
+    --   --  "--clang-tidy",
+    --   "--completion-style=detailed"
+    -- }
   end,
   ["lua_ls"] = function(opts)
     opts.settings = {
