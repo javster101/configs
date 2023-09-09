@@ -35,16 +35,15 @@ out.load_keybinds = function()
       },
       l = { require("nabla").popup, 'Render LaTEX' },
       t = {
+        f = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal", noremap = true, silent = true },
         h = { function() require("nvterm.terminal").toggle("horizontal") end, "Open horizontal terminal" },
         v = { function() require("nvterm.terminal").toggle("vertical") end, "Open vertical terminal" },
-        g = { '<cmd>Telescope live_grep<CR>', "Grep" },
-        s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
-        b = { '<cmd>Telescope lsp_document_symbols<CR>', "Find buffer symbols" }
       },
       f = {
-        b = { vim.lsp.buf.format, "Format" },
-        t = { '<cmd>NvimTreeToggle<CR>', 'Open file browser' },
-        f = { '<cmd>NvimTreeFindFile<CR>', 'Open file browser to current file' },
+        s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
+        d = { '<cmd>Telescope lsp_document_symbols<CR>', "Find document symbols" },
+        b = { '<cmd>Telescope buffers<CR>', "Find buffers" },
+        g = { '<cmd>Telescope live_grep<CR>', "Grep" },
       },
       e = {
         l = { '<cmd>Lspsaga show_line_diagnostics<CR>', "Line diagnostic" },
@@ -60,9 +59,7 @@ out.load_keybinds = function()
     },
     K = { '<cmd>Lspsaga hover_doc<CR>', "Hover doc" },
     ['-'] = { require("oil").open, "Open parent directory" },
-    ['<A-t>'] = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal", noremap = true, silent = true }
   })
-
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.keymap.set('n', '<M-n>', '<cmd>Telescope find_files<CR>', opts)
