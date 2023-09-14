@@ -32,5 +32,6 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR=nvim
 alias config="/usr/bin/git --git-dir=$HOME/.cfgs --work-tree=$HOME"
+alias tk="~/kiwi/kiwi_toolkit/toolkit"
 
 [[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh

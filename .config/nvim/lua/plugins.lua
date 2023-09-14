@@ -37,16 +37,24 @@ require('lazy').setup({
     'akinsho/bufferline.nvim',
     opts   = {
       options = {
+        hover = {
+          enabled = true
+        },
+        separator_style = 'slope',
         diagnostics_indicator = function(count, level, diagnostics_dict, context)
           local icon = level:match("error") and " " or " "
           return " " .. icon .. count
         end,
+        groups = {
+            items = {
+               -- require('bufferline.groups').builtin.pinned:with({ icon = "" })
+            }
+        },
+        indicator = {
+          style = 'underline'
+        },
         diagnostics = 'nvim_lsp',
-        offsets = {
-          {
-            filetype = 'NvimTree'
-          }
-        }
+
       }
     },
   },
@@ -54,22 +62,16 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     opts = {
       options = {
-        theme = 'material',
         globalstatus = true
       },
-    },
-  },
-  {
-    'marko-cerovac/material.nvim',
-    config = function()
-      require('material').setup({
-        plugins = {
-          'dap', 'lspsaga', 'nvim-cmp', 'neogit', 'gitsigns',
-          'trouble', 'which-key', 'indent-blankline', 'nvim-web-devicons'
+      sections = {
+          lualine_c = {
+             function ()
+                return require('auto-session.lib').current_session_name()
+            end
         }
-      })
-      vim.g.material_style = 'deep ocean'
-    end
+      }
+    },
   },
   {
     'norcalli/nvim-colorizer.lua',
@@ -113,6 +115,21 @@ require('lazy').setup({
   {
     'folke/which-key.nvim',
     config = true
+  },
+  {
+    "rmagatti/auto-session",
+    opts = {
+      auto_session_suppress_dirs = {'/home/kiwi'},
+      auto_session_use_git_branch = true
+    }
+  },
+
+  -- Themes
+  {
+    'EdenEast/nightfox.nvim',
+    config = function ()
+      vim.cmd('colorscheme carbonfox')
+    end
   },
 
   -- LSP plugins
@@ -203,6 +220,11 @@ require('lazy').setup({
       require('telescope').load_extension('dap')
       require('telescope').load_extension('ui-select')
     end
+  },
+  {
+    "rmagatti/session-lens",
+    requires = { 'rmagatti/auto-session', 'nvim-telescope/telescope.nvim' },
+    config = true
   },
 
   -- Language LSPs

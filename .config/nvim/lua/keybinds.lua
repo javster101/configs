@@ -12,7 +12,7 @@ out.load_keybinds = function()
       d = { vim.lsp.buf.definition, "Go to definition" },
       D = { vim.lsp.buf.declaration, "Go to declaration" },
       m = { vim.lsp.buf.implementation, "Go to implementation" },
-      u = { '<cmd>Lspsaga lsp_finder<CR>', "Find usages" },
+      u = { '<cmd>Lspsaga finder<CR>', "Find usages" },
       p = { '<cmd>Lspsaga peek_definition<CR>', "Peek definition" },
       -- r = { '<cmd>Telescope lsp_references<CR>', "Go to references" },
       i = { '<cmd>Lspsaga incoming_calls<CR>', "Go to incoming calls" },
@@ -40,10 +40,11 @@ out.load_keybinds = function()
         v = { function() require("nvterm.terminal").toggle("vertical") end, "Open vertical terminal" },
       },
       f = {
-        s = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
+        w = { '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', "Find workspace symbols" },
         d = { '<cmd>Telescope lsp_document_symbols<CR>', "Find document symbols" },
         b = { '<cmd>Telescope buffers<CR>', "Find buffers" },
         g = { '<cmd>Telescope live_grep<CR>', "Grep" },
+        f = { vim.lsp.buf.format, "Format" }
       },
       e = {
         l = { '<cmd>Lspsaga show_line_diagnostics<CR>', "Line diagnostic" },
@@ -55,6 +56,13 @@ out.load_keybinds = function()
       K = { '<cmd>Lspsaga hover_doc ++keep<CR>', "Open and keep hover doc" },
       r = {
         n = { '<cmd>Lspsaga rename<CR>', "Rename" },
+      },
+      p = { '<cmd>BufferLineTogglePin<CR>', "Pin Buffer" },
+
+      s = {
+        s = { '<cmd>SessionSave<CR>', 'Save session' },
+        o = { '<cmd>Telescope session-lens search_session<CR>', "Open session" },
+        d = { '<cmd>Autosession delete<CR>', 'Delete session' },
       },
     },
     K = { '<cmd>Lspsaga hover_doc<CR>', "Hover doc" },

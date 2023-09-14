@@ -20,35 +20,37 @@ vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 require('plugins')
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = "", Warn = "", Hint = "󰌶", Info = "" }
 local kind_icons = {
   Text = "",
-  Method = "",
-  Function = "",
+  Method = "",
+  Function = "󰊕",
   Constructor = "",
-  Field = "",
+  Field = "",
   Variable = "",
-  Class = "ﴯ",
+  Class = "",
   Interface = "",
   Module = "",
-  Property = "ﰠ",
+  Property = "",
   Unit = "",
-  Value = "",
+  Value = "",
   Enum = "",
   Keyword = "",
   Snippet = "",
-  Color = "",
-  File = "",
+  Color = "",
+  File = "",
   Reference = "",
-  Folder = "",
+  Folder = "",
   EnumMember = "",
   Constant = "",
   Struct = "",
   Event = "",
-  Operator = "",
-  TypeParameter = ""
+  Operator = "",
+  TypeParameter = ""
 }
 
 for type, icon in pairs(signs) do
@@ -165,6 +167,9 @@ local enhance_server_opts = {
     }
   end,
   ["pyright"] = function(opts)
+    opts.root_dir = function()
+      return vim.fs.dirname(vim.fs.find({'pyrightconfig.json', '.git'}, {upward = true})[1])
+    end
     opts.on_attach = function (client, buffer)
       require('dap-python').setup('/usr/bin/python')
       general_attach(client, buffer)
@@ -294,4 +299,3 @@ vim.api.nvim_create_autocmd('VimEnter', {
   command = 'if argc() == 0 && getcwd() == $HOME | e Documents/Sync/notes.mk | endif'
 })
 
-vim.cmd 'colorscheme material'
