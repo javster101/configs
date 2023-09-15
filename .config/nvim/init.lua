@@ -67,7 +67,7 @@ vim.g.symbols_outline = {
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
 
-vim.wo.stl = require('lspsaga.symbolwinbar'):get_winbar()
+vim.wo.stl = require('lspsaga.symbol.winbar'):get_bar()
 
 local luasnip = require("luasnip")
 local cmp = require('cmp')
