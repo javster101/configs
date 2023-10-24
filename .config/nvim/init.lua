@@ -8,6 +8,7 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.number = true
 vim.o.wrap = false
+vim.o.linebreak = true
 vim.o.termguicolors = true
 vim.o.splitbelow = true
 vim.o.signcolumn = 'yes'
@@ -15,6 +16,7 @@ vim.o.updatetime = 100
 vim.o.syntax = true
 vim.o.scrolloff = 5
 
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.foldcolumn = '1'
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
@@ -66,6 +68,9 @@ vim.g.symbols_outline = {
 
 vim.o.completeopt = 'menuone,noselect,noinsert'
 vim.o.showmode = false
+
+vim.g.gitblame_display_virtual_text = 0
+vim.g.gitblame_date_format = '%a %d %b %Y (%r)'
 
 vim.wo.stl = require('lspsaga.symbol.winbar'):get_bar()
 
@@ -146,7 +151,7 @@ end
 
 local enhance_server_opts = {
   ["clangd"] = function(opts)
-    -- opts.capabilities.offsetEncoding = 'utf-8'
+    opts.capabilities.offsetEncoding = 'utf-8'
     -- opts.cmd = {
     --   "clangd",
     --   "--background-index",
@@ -183,7 +188,6 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true
 }
-
 
 require('mason-lspconfig').setup_handlers({
   function(server)
@@ -283,10 +287,24 @@ dap.adapters.codelldb = {
   port = 13000
 }
 
-
 numbers = function(opts)
   return string.format('%s.%s', opts.lower(opts.id), opts.lower(opts.ordinal))
 end
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = 'startinsert'
+})
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = 'setlocal nonumber foldcolumn=0 norelativenumber signcolumn=no'
+})
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = [[tnoremap <buffer> <Esc> <c-\><c-n>]]
+})
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'scala,sbt',

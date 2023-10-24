@@ -11,7 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
-  -- Core 
+  -- Core
   'nvim-lua/plenary.nvim',
   {
     'nvim-treesitter/nvim-treesitter',
@@ -19,8 +19,10 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+        ignore_install = { "comment" },
         highlight = {
-          enable = true,          -- false will disable the whole extension
+          enable = true, -- false will disable the whole extension
+          disable = { "comment" },
           additional_vim_regex_highlighting = {
             'markdown'
           }
@@ -35,7 +37,7 @@ require('lazy').setup({
   -- Looks
   {
     'akinsho/bufferline.nvim',
-    opts   = {
+    opts = {
       options = {
         hover = {
           enabled = true
@@ -46,9 +48,9 @@ require('lazy').setup({
           return " " .. icon .. count
         end,
         groups = {
-            items = {
-               -- require('bufferline.groups').builtin.pinned:with({ icon = "" })
-            }
+          items = {
+            -- require('bufferline.groups').builtin.pinned:with({ icon = "" })
+          }
         },
         indicator = {
           style = 'underline'
@@ -60,18 +62,21 @@ require('lazy').setup({
   },
   {
     'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        globalstatus = true
-      },
-      sections = {
+    opts = function()
+      local gitblame = require('gitblame')
+      local auto_session = require('auto-session.lib')
+      return {
+        options = {
+          globalstatus = true
+        },
+        sections = {
           lualine_c = {
-             function ()
-                return require('auto-session.lib').current_session_name()
-            end
+            auto_session.current_session_name,
+            { gitblame.get_current_blame_text, cond = gitblame.is_blame_text_available }
+          }
         }
       }
-    },
+    end
   },
   {
     'norcalli/nvim-colorizer.lua',
@@ -119,7 +124,7 @@ require('lazy').setup({
   {
     "rmagatti/auto-session",
     opts = {
-      auto_session_suppress_dirs = {'/home/kiwi'},
+      auto_session_suppress_dirs = { vim.env.HOME },
       auto_session_use_git_branch = true
     }
   },
@@ -127,7 +132,7 @@ require('lazy').setup({
   -- Themes
   {
     'EdenEast/nightfox.nvim',
-    config = function ()
+    config = function()
       vim.cmd('colorscheme carbonfox')
     end
   },
@@ -151,13 +156,17 @@ require('lazy').setup({
     config = true
   },
 
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'ray-x/cmp-treesitter',
-  'hrsh7th/nvim-cmp',
-  'L3MON4D3/LuaSnip',
-  'saadparwaiz1/cmp_luasnip',
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'ray-x/cmp-treesitter',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+    }
+  },
   {
     'folke/trouble.nvim',
     opts = {
@@ -227,9 +236,18 @@ require('lazy').setup({
     config = true
   },
 
-  -- Language LSPs
+  -- Language Support
   'mfussenegger/nvim-jdtls',
   'jbyuki/nabla.nvim',
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
   'scalameta/nvim-metals',
   {
     'folke/neoconf.nvim',
@@ -240,7 +258,7 @@ require('lazy').setup({
   {
     'epwalsh/obsidian.nvim',
     lazy = true,
-    event = { 'BufReadPre /var/home/javst/Documents/Sync/DND/**.md'},
+    event = { 'BufReadPre /var/home/javst/Documents/Sync/DND/**.md' },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'hrsh7th/nvim-cmp',
@@ -282,7 +300,21 @@ require('lazy').setup({
   {
     'kevinhwang91/nvim-ufo',
     dependencies = {
-      'kevinhwang91/promise-async'
+      'kevinhwang91/promise-async',
+      {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+          local builtin = require("statuscol.builtin")
+          require("statuscol").setup({
+            relculright = true,
+            segments = {
+              { text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+              { text = { "%s" },                  click = "v:lua.ScSa" },
+              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            },
+          })
+        end,
+      },
     },
     config = function()
       require('ufo').setup()
@@ -300,15 +332,7 @@ require('lazy').setup({
           }
         }
       }
-    },
-    keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump({
-        search = { max_length = 2 },
-        jump = { autojump = true }
-      }) end, desc = "Flash" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    },
+    }
   },
   {
     'chentoast/marks.nvim',
@@ -320,16 +344,16 @@ require('lazy').setup({
       require('mini.ai').setup()
       require('mini.surround').setup({
         mappings = {
-          add = ' sa',      -- Add surrounding in Normal and Visual modes
-          delete = ' sd',   -- Delete surrounding
-          find = ' sf',     -- Find surrounding (to the right)
-          find_left = ' sF', -- Find surrounding (to the left)
-          highlight = ' sh', -- Highlight surrounding
-          replace = ' sr',  -- Replace surrounding
+          add = ' sa',            -- Add surrounding in Normal and Visual modes
+          delete = ' sd',         -- Delete surrounding
+          find = ' sf',           -- Find surrounding (to the right)
+          find_left = ' sF',      -- Find surrounding (to the left)
+          highlight = ' sh',      -- Highlight surrounding
+          replace = ' sr',        -- Replace surrounding
           update_n_lines = ' sn', -- Update `n_lines`
 
-          suffix_last = 'l', -- Suffix to search with "prev" method
-          suffix_next = 'n', -- Suffix to search with "next" method
+          suffix_last = 'l',      -- Suffix to search with "prev" method
+          suffix_next = 'n',      -- Suffix to search with "next" method
         },
       })
     end,
@@ -337,9 +361,20 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects'
     }
   },
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
 
   -- Git
   'sindrets/diffview.nvim',
+  'f-person/git-blame.nvim',
   {
     'NeogitOrg/neogit',
     dependencies = "nvim-lua/plenary.nvim",
