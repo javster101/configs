@@ -36,7 +36,10 @@ out.load_keybinds = function()
     },
     ['<space>'] = {
       g = {
-        d = {'<cmd>GitBlameToggle<CR>', "Toggle git blame"}
+        b = {'<cmd>GitBlameToggle<CR>', "Toggle git blame"},
+        d = {'<cmd>DiffviewOpen<CR>', "Open git diff"},
+        o = { require('neogit').open, "Open Neogit"},
+        "Git"
       },
       c = {
         a = { vim.lsp.buf.code_action, "Code action" },
@@ -82,10 +85,12 @@ out.load_keybinds = function()
         r = { function() require('refactoring').select_refactor() end, "Refactor"},
         e = { function() require('refactoring').refactor('Extract Function') end, "Extract Function"},
         v = { function() require('refactoring').refactor('Extract Variable') end, "Extract Variable"},
+        "Refactor"
       },
       b = {
         p = { '<cmd>BufferLineTogglePin<CR>', "Pin Buffer" },
-        d = { '<cmd>BufferLinePickClose<CR>', "Pin Buffer" },
+        d = { '<cmd>BufferLinePickClose<CR>', "Close Buffer" },
+        "Buffers"
       },
       s = {
         s = { '<cmd>SessionSave<CR>', 'Save session' },
