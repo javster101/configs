@@ -38,7 +38,7 @@ out.load_keybinds = function()
       g = {
         b = {'<cmd>GitBlameToggle<CR>', "Toggle git blame"},
         d = {'<cmd>DiffviewOpen<CR>', "Open git diff"},
-        o = { require('neogit').open, "Open Neogit"},
+        o = { function () require('neogit').open() end, "Open Neogit"},
         "Git"
       },
       c = {
@@ -47,16 +47,16 @@ out.load_keybinds = function()
       },
       d = {
         c = { require("dap").continue, "Continue" },
-        K = { require("dap.ui.widgets").hover, "Debug hover" },
+        K = { function () require("dap.ui.widgets").hover() end, "Debug hover" },
         B = { require("dap").toggle_breakpoint, "Toggle breakpoint" },
         o = { require("dap").step_over, "Step over" },
         i = { require("dap").step_into, "Step into" },
         r = { '<cmd>Telescope dap configurations<CR>', "Run previous" },
-        ui = { require("dapui").toggle, "Toggle" },
+        ui = { function () require("dapui").toggle() end, "Toggle" },
         p = { require("dap").repl.toggle, "Toggle REPL" },
         "Debug"
       },
-      l = { require("nabla").popup, 'Render LaTEX' },
+      l = { function () require("nabla").popup() end, 'Render LaTEX' },
       t = {
         f = { '<cmd>Lspsaga term_toggle<CR>', "Open floating terminal", noremap = true, silent = true },
         h = { function() require("nvterm.terminal").toggle("horizontal") end, "Open horizontal terminal" },
