@@ -80,8 +80,8 @@ require('lazy').setup({
         },
         sections = {
           lualine_c = {
-            auto_session.current_session_name,
-            { gitblame.get_current_blame_text, cond = gitblame.is_blame_text_available }
+            { gitblame.get_current_blame_text, cond = gitblame.is_blame_text_available },
+            'copilot'
           }
         }
       }
@@ -108,7 +108,6 @@ require('lazy').setup({
               -- You can use the capture groups defined in textobjects.scm
               ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
               ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-              ["l="] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
               ["r="] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
 
               ["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
@@ -134,11 +133,11 @@ require('lazy').setup({
             enable = true,
             swap_next = {
               ["<leader>na"] = "@parameter.inner", -- swap parameters/argument with next
-              ["<leader>nm"] = "@function.outer", -- swap function with next
+              ["<leader>nm"] = "@function.outer",  -- swap function with next
             },
             swap_previous = {
               ["<leader>pa"] = "@parameter.inner", -- swap parameters/argument with prev
-              ["<leader>pm"] = "@function.outer", -- swap function with previous
+              ["<leader>pm"] = "@function.outer",  -- swap function with previous
             },
           },
           move = {
@@ -222,6 +221,11 @@ require('lazy').setup({
       auto_session_use_git_branch = true
     }
   },
+  {
+    'mrjones2014/smart-splits.nvim',
+    build = './kitty/install-kittens.bash',
+    config = true,
+  },
 
   -- Themes
   {
@@ -267,6 +271,16 @@ require('lazy').setup({
       position = 'left'
     },
     config = true
+  },
+  {
+    'nvimtools/none-ls.nvim',
+    config = function()
+      require('null-ls').setup({
+        sources = {
+          require('null-ls').builtins.formatting.black,
+        },
+      })
+    end
   },
 
   --DAP plugins
@@ -469,6 +483,29 @@ require('lazy').setup({
     config = function()
       require("refactoring").setup()
     end,
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetypes = {
+        python = true,
+        rust = true,
+        lua = true,
+        typescript = true,
+      }
+    },
+    config = true,
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'zbirenbaum/copilot-cmp',
+    config = true,
+  },
+  {
+    'AndreM222/copilot-lualine'
   },
 
   -- Git

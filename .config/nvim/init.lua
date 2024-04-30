@@ -23,7 +23,7 @@ vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
-vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 require('plugins')
 
@@ -53,8 +53,10 @@ local kind_icons = {
   Struct = "",
   Event = "",
   Operator = "",
-  TypeParameter = ""
+  TypeParameter = "",
+  Copilot = ""
 }
+
 
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
@@ -105,11 +107,29 @@ cmp.setup({
       require('luasnip').lsp_expand(args.body)
     end,
   },
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      require("copilot_cmp.comparators").prioritize,
+
+      -- Below is the default comparitor list and order for nvim-cmp
+      cmp.config.compare.offset,
+      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
   mapping = cmp.mapping.preset.insert({
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ['<C-e>'] = cmp.mapping.abort(),
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
+      if cmp.visible() and has_words_before() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
@@ -131,6 +151,7 @@ cmp.setup({
     end, { "i", "s" }),
   }),
   sources = cmp.config.sources({
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'treesitter' },
@@ -147,7 +168,7 @@ cmp.event:on(
 
 local mason_path = vim.env.HOME .. '/.local/share/nvim/mason/'
 
-local general_attach = function (client, buffer)
+local general_attach = function(client, buffer)
 end
 
 local enhance_server_opts = {
@@ -174,9 +195,9 @@ local enhance_server_opts = {
   end,
   ["pyright"] = function(opts)
     opts.root_dir = function()
-      return vim.fs.dirname(vim.fs.find({'pyrightconfig.json', '.git'}, {upward = true})[1])
+      return vim.fs.dirname(vim.fs.find({ 'pyrightconfig.json', '.git' }, { upward = true })[1])
     end
-    opts.on_attach = function (client, buffer)
+    opts.on_attach = function(client, buffer)
       require('dap-python').setup('/usr/bin/python')
       general_attach(client, buffer)
     end
@@ -203,7 +224,7 @@ require('mason-lspconfig').setup_handlers({
 
     require('lspconfig')[server].setup(opts)
   end,
-  ['jdtls'] = function ()
+  ['jdtls'] = function()
     local opts = {
       capabilities = capabilities,
       init_options = {
@@ -220,7 +241,7 @@ require('mason-lspconfig').setup_handlers({
         '-configuration', '/var/home/javst/.cache/jdtls/config',
         '-data', '/var/home/javst/.cache/jdtls/workspace'
       },
-      root_dir = vim.fs.dirname(vim.fs.find({'gradlew', 'build.gradle', '.git', 'mvnw'}, {upward = true})[1]),
+      root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', 'build.gradle', '.git', 'mvnw' }, { upward = true })[1]),
       flags = {
         allow_incremental_sync = true
       },
@@ -238,7 +259,7 @@ require('mason-lspconfig').setup_handlers({
       end
     })
   end,
-  ['rust_analyzer'] = function ()
+  ['rust_analyzer'] = function()
     local opts = {
       capabilities = capabilities,
       settings = {
@@ -317,4 +338,3 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('VimEnter', {
   command = 'if argc() == 0 && getcwd() == $HOME | e Documents/Sync/notes.mk | endif'
 })
-

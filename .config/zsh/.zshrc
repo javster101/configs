@@ -25,13 +25,24 @@ plugins=(
   zsh-autosuggestions 
   command-not-found
   zsh-syntax-highlighting
+  fzf
 )
 
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR=nvim
+
+# config aliases
 alias config="/usr/bin/git --git-dir=$HOME/.cfgs --work-tree=$HOME"
+alias nvim-zsh="nvim ~/.config/zsh/"
+alias nvim-nvim="nvim ~/.config/nvim/"
+alias nvim-kitty="nvim ~/.config/kitty/"
+
+# work aliases
 alias tk="~/kiwi/kiwi_toolkit/toolkit"
+alias kiwi="cd ~/kiwi"
+alias px4="cd ~/px4"
+alias in-air="DOCKER_HOST=tcp://192.168.2.100:2375"
 
 function open () {
   xdg-open "$@">/dev/null 2>&1
@@ -52,6 +63,9 @@ function cd() {
       parentdir="$(dirname "$VIRTUAL_ENV")"
       if [[ "$PWD"/ != "$parentdir"/* ]] ; then
         deactivate
+        if [[ -d ./.venv ]] ; then
+          source ./.venv/bin/activate
+        fi
       fi
   fi
 }
