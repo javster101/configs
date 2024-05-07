@@ -81,6 +81,9 @@ out.load_keybinds = function()
       },
       k = { '<cmd>Lspsaga hover_doc<CR>', "Hover doc" },
       K = { '<cmd>Lspsaga hover_doc ++keep<CR>', "Open and keep hover doc" },
+      p = {
+        i = { '<cmd>PasteImage<cr>', "Paste image"}
+      },
       r = {
         n = { '<cmd>Lspsaga rename<CR>', "Rename" },
         r = { function() require('refactoring').select_refactor() end, "Refactor" },

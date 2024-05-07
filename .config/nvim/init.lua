@@ -14,7 +14,7 @@ vim.o.termguicolors = true
 vim.o.splitbelow = true
 vim.o.signcolumn = 'yes'
 vim.o.updatetime = 100
-vim.o.syntax = true
+--vim.o.syntax = true
 vim.o.scrolloff = 5
 
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
