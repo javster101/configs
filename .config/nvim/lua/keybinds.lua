@@ -42,7 +42,7 @@ out.load_keybinds = function()
         "Git"
       },
       c = {
-        a = { vim.lsp.buf.code_action, "Code action" },
+        a = { '<cmd>Lspsaga code_action<CR>', "Code action" },
         l = { vim.lsp.codelens.run, "Run codelens" },
       },
       d = {
@@ -51,9 +51,13 @@ out.load_keybinds = function()
         B = { require("dap").toggle_breakpoint, "Toggle breakpoint" },
         o = { require("dap").step_over, "Step over" },
         i = { require("dap").step_into, "Step into" },
+        u = { require("dap").step_out, "Step out" },
+        gu = { require("dap").up, "Go up in stacktrace" },
+        gd = { require("dap").down, "Go down in stacktrace" },
         r = { '<cmd>Telescope dap configurations<CR>', "Run previous" },
         ui = { function() require("dapui").toggle() end, "Toggle" },
         p = { require("dap").repl.toggle, "Toggle REPL" },
+        R = { function() vim.cmd.RustLsp('debug') end, "Debug Rust"},
         "Debug"
       },
       l = { function() require("nabla").popup() end, 'Render LaTEX' },

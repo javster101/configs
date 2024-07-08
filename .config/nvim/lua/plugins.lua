@@ -291,6 +291,9 @@ require('lazy').setup({
     config = function()
       require('dapui').setup()
     end,
+    dependencies = {
+      'nvim-neotest/nvim-nio'
+    },
     lazy = true
   },
   {
@@ -362,8 +365,7 @@ require('lazy').setup({
     config = true
   },
   {
-    'simrat39/rust-tools.nvim',
-    lazy = true
+    'mrcjkb/rustaceanvim',
   },
   {
     'mfussenegger/nvim-dap-python',
@@ -522,6 +524,7 @@ require('lazy').setup({
   {
     'pwntester/octo.nvim',
     dependences = 'nvim-lua/plenary.nvim',
+    lazy = true,
     config = true
   },
   {

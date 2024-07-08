@@ -210,7 +210,8 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true
 }
-
+vim.lsp.inlay_hint.enable(true)
+require'lspconfig'.gdscript.setup{}
 require('mason-lspconfig').setup_handlers({
   function(server)
     local opts = {
@@ -260,54 +261,9 @@ require('mason-lspconfig').setup_handlers({
     })
   end,
   ['rust_analyzer'] = function()
-    local opts = {
-      capabilities = capabilities,
-      settings = {
-        ["rust-analyzer"] = {
-          lens = {
-            enable = true,
-          }
-        }
-      },
-      on_attach = function(client, buffer)
-        vim.keymap.set('n', 'K', require('rust-tools').hover_actions.hover_actions, { noremap = true })
-        general_attach(client, buffer)
-      end
-    }
-
-    require('rust-tools').setup({
-      server = opts,
-      tools = {
-        on_initialized = function()
-          vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufEnter', "CursorHold", "InsertLeave" }, {
-            pattern = { "*.rs" },
-            callback = function()
-              local _, _ = pcall(vim.lsp.codelens.refresh)
-            end,
-          })
-        end,
-        runnables = {
-          use_telescope = true
-        },
-      },
-      hover_actions = {
-        auto_focus = true,
-      },
-      dap = {
-        adapter = require('rust-tools.dap').get_codelldb_adapter(
-          mason_path .. '/bin/codelldb', mason_path .. '/packages/codelldb/extension/lldb/lib/liblldb.so'
-        )
-      }
-    })
+    -- Autoruns with rustaceanvim
   end
 })
-
-local dap = require("dap")
-dap.adapters.codelldb = {
-  type = 'server',
-  host = '127.0.0.1',
-  port = 13000
-}
 
 numbers = function(opts)
   return string.format('%s.%s', opts.lower(opts.id), opts.lower(opts.ordinal))
