@@ -73,7 +73,6 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     opts = function()
       local gitblame = require('gitblame')
-      local auto_session = require('auto-session.lib')
       return {
         options = {
           globalstatus = true
@@ -82,6 +81,15 @@ require('lazy').setup({
           lualine_c = {
             { gitblame.get_current_blame_text, cond = gitblame.is_blame_text_available },
             'copilot'
+          },
+          lualine_d = {
+            {
+              function()
+                return vim.g.remote_neovim_host and ("Remote: %s"):format(vim.uv.os_gethostname()) or ""
+              end,
+              padding = { right = 1, left = 1 },
+              separator = { left = "", right = "" },
+            },
           }
         }
       }
@@ -94,6 +102,10 @@ require('lazy').setup({
     end
   },
   'nvim-tree/nvim-web-devicons',
+  {
+    'folke/zen-mode.nvim',
+    config = true
+  },
 
   -- Tools
   {
@@ -225,6 +237,16 @@ require('lazy').setup({
   {
     'mrjones2014/smart-splits.nvim',
     build = './kitty/install-kittens.bash',
+    config = true,
+  },
+  {
+    "amitds1997/remote-nvim.nvim",
+    version = "*",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
     config = true,
   },
 

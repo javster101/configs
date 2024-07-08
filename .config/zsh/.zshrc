@@ -43,6 +43,7 @@ alias tk="~/kiwi/kiwi_toolkit/toolkit"
 alias kiwi="cd ~/kiwi"
 alias px4="cd ~/px4"
 alias in-air="DOCKER_HOST=tcp://192.168.2.100:2375"
+alias in-payload="DOCKER_HOST=tcp://192.168.2.108:2375"
 
 function open () {
   xdg-open "$@">/dev/null 2>&1
