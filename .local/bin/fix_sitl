@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker container stop $(docker container ls -q --filter name=SITL_.\*)
+docker rm $(docker container ls -qa --filter name=SITL_.\*)
+docker network remove SITL_sim_net
+docker volume remove SITL_logs
