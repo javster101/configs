@@ -57,8 +57,23 @@ require('lazy').setup({
           return " " .. icon .. count
         end,
         groups = {
+          options = {
+            toggle_hidden_on_enter = true
+          },
           items = {
-            -- require('bufferline.groups').builtin.pinned:with({ icon = "" })
+            {
+              name = "Work",
+              matcher = function(buf)
+                return require("hbac.state").is_pinned(buf.id)
+              end
+            },
+            {
+              name = "Temp.",
+              auto_close = false,
+              matcher = function(buf)
+                return not require("hbac.state").is_pinned(buf.id)
+              end
+            }
           }
         },
         indicator = {
@@ -249,6 +264,10 @@ require('lazy').setup({
     },
     config = true,
   },
+  {
+    "axkirillov/hbac.nvim",
+    config = true,
+  },
 
   -- Themes
   {
@@ -364,6 +383,14 @@ require('lazy').setup({
   {
     'mfussenegger/nvim-jdtls',
     lazy = true
+  },
+  {
+    'OXY2DEV/markview.nvim',
+    lazy = false,
+    config = {
+      modes = { "n", "no", "c" },
+      hybrid_modes = { "n" }
+    }
   },
   {
     'jbyuki/nabla.nvim',
@@ -546,7 +573,6 @@ require('lazy').setup({
   {
     'pwntester/octo.nvim',
     dependences = 'nvim-lua/plenary.nvim',
-    lazy = true,
     config = true
   },
   {

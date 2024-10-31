@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH="/opt/gcc-arm-none-eabi-9-2020-q2-update/bin:$HOME/bin:$HOME/.local/bin:$HOME/.local/share/coursier/bin:$HOME/go/bin:$PATH"
+export PATH="/opt/nvim-linux64/bin:/opt/gcc-arm-none-eabi-9-2020-q2-update/bin:$HOME/bin:$HOME/.local/bin:$HOME/.local/share/coursier/bin:$HOME/go/bin:$PATH"
 export LESSOPEN="| src-hilite-lesspipe.sh %s" 
 export LESS=" -R "
 
@@ -38,10 +38,17 @@ alias nvim-zsh="nvim ~/.config/zsh/"
 alias nvim-nvim="nvim ~/.config/nvim/"
 alias nvim-kitty="nvim ~/.config/kitty/"
 
+# git aliases
+# alias gs="git status"
+# alias gc="git commit"
+# alias gca="git commit --amend"
+# alias gcm="git commit -m"
+
 # work aliases
 alias tk="~/kiwi/kiwi_toolkit/toolkit"
-alias kiwi="cd ~/kiwi"
-alias px4="cd ~/px4"
+alias kiwi="enter_dir_folder kiwi_docker ~/kiwi"
+alias px4="enter_dir_folder kiwi_docker ~/px4"
+alias hitl_fts="enter_dir_folder hitl_fts ~/hitl_fts"
 alias in-air="DOCKER_HOST=tcp://192.168.2.100:2375"
 alias in-payload="DOCKER_HOST=tcp://192.168.2.108:2375"
 
@@ -71,4 +78,13 @@ function cd() {
   fi
 }
 
+function enter_dir_folder() {
+  if [[ -z "$CONTAINER_ID" ]] ; then 
+    distrobox enter --root "$1"
+  else 
+    cd "$2"
+  fi
+}
+
 [[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
