@@ -221,7 +221,6 @@ require('lazy').setup({
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
         },
       },
       presets = {
@@ -297,15 +296,37 @@ require('lazy').setup({
   },
 
   {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'ray-x/cmp-treesitter',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-    }
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+
+    version = 'v0.*',
+    opts = {
+      keymap = { preset = 'default' },
+
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono',
+        kind_icons = {
+          Copilot = "",
+        },
+      },
+
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
+      },
+
+      -- experimental signature help support
+      -- signature = { enabled = true }
+    },
+    opts_extend = { "sources.default" }
   },
   {
     'folke/trouble.nvim',
@@ -426,15 +447,11 @@ require('lazy').setup({
     event = { 'BufReadPre /var/home/javst/Documents/Sync/DND/**.md' },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'hrsh7th/nvim-cmp',
       'nvim-telescope/telescope.nvim',
       'preservim/vim-markdown',
     },
     opts = {
       dir = '~/Documents/Sync/DND/',
-      completion = {
-        nvim_cmp = true,
-      },
       disable_frontmatter = true,
       templates = {
         subdir = "Templates",
@@ -558,22 +575,26 @@ require('lazy').setup({
     event = "InsertEnter",
   },
   {
-    'zbirenbaum/copilot-cmp',
-    config = true,
+    'AndreM222/copilot-lualine'
   },
   {
-    'AndreM222/copilot-lualine'
+    'fang2hou/blink-copilot',
+    config = true
   },
 
   -- Git
   {
     'sindrets/diffview.nvim',
-    lazy = true
   },
   {
     'pwntester/octo.nvim',
     dependences = 'nvim-lua/plenary.nvim',
-    config = true
+    cond = vim.fn.executable('gh') == 1,
+    config = {
+      suppress_missing_scope = {
+        projects_v2 = true,
+      }
+    }
   },
   {
     'f-person/git-blame.nvim',

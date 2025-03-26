@@ -51,6 +51,10 @@ alias px4="enter_dir_folder kiwi_docker ~/px4"
 alias hitl_fts="enter_dir_folder hitl_fts ~/hitl_fts"
 alias in-air="DOCKER_HOST=tcp://192.168.2.100:2375"
 alias in-payload="DOCKER_HOST=tcp://192.168.2.108:2375"
+alias sitl-mrpayload="SIM_ENABLED=true SIM_SERVICE_IP_MAP=\"{\\\"payload_service\\\": \\\"172.28.0.22\\\"}\" RUST_LOG=debug cargo run"
+alias sim-mrpayload="SIM_ENABLED=true SIM_SERVICE_IP_MAP=\"{\\\"payload_service\\\": \\\"127.0.0.1\\\"}\" RUST_LOG=debug cargo run"
+export KIWI_NO_RUST_CONTAINER=true
+export PX4_DIR="~/px4"
 
 function open () {
   xdg-open "$@">/dev/null 2>&1
