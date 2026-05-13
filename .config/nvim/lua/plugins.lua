@@ -19,7 +19,7 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-        ignore_install = { "comment" },
+        ignore_install = { "comment", "ipkg" },
         highlight = {
           enable = true, -- false will disable the whole extension
           disable = { "comment" },
@@ -122,7 +122,7 @@ require('lazy').setup({
     config = true
   },
 
-  -- Tools
+  -- Navigation
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = function()
@@ -210,7 +210,34 @@ require('lazy').setup({
     end
   },
   {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {
+      modes = {
+        search = {
+          enabled = true,
+          highlight = {
+            backdrop = true
+          }
+        }
+      }
+    }
+  },
+  {
+    'chentoast/marks.nvim',
+    config = true
+  },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = true
+  },
+
+  -- Tools
+  {
     'folke/noice.nvim',
+    enabled = true,
     event = 'VeryLazy',
     dependencies = {
       'MunifTanjim/nui.nvim',
@@ -226,6 +253,14 @@ require('lazy').setup({
       presets = {
         bottom_search = true,
         command_palette = true
+      }
+    }
+  },
+  {
+    'kevinhwang91/nvim-bqf',
+    config = {
+      preview = {
+        winblend = 0
       }
     }
   },
@@ -284,7 +319,13 @@ require('lazy').setup({
   },
   {
     'williamboman/mason-lspconfig.nvim',
-    config = true
+    config = {
+      automatic_enable = {
+        exclude = {
+          "rust_analyzer"
+        }
+      }
+    }
   },
   {
     'glepnir/lspsaga.nvim',
@@ -313,6 +354,9 @@ require('lazy').setup({
 
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+        per_filetype = {
+          codecompanion = { 'codecompanion' },
+        },
         providers = {
           copilot = {
             name = "copilot",
@@ -409,8 +453,11 @@ require('lazy').setup({
     'OXY2DEV/markview.nvim',
     lazy = false,
     config = {
-      modes = { "n", "no", "c" },
-      hybrid_modes = { "n" }
+      preview = {
+        filetype = { "markdown", "codecompanion" },
+        modes = { "n", "no", "c" },
+        hybrid_modes = { "n" }
+      }
     }
   },
   {
@@ -439,6 +486,7 @@ require('lazy').setup({
   },
   {
     'mfussenegger/nvim-dap-python',
+    enabled = false,
     lazy = true
   },
   {
@@ -508,24 +556,6 @@ require('lazy').setup({
     end
   },
   {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    opts = {
-      modes = {
-        search = {
-          enabled = true,
-          highlight = {
-            backdrop = true
-          }
-        }
-      }
-    }
-  },
-  {
-    'chentoast/marks.nvim',
-    config = true
-  },
-  {
     'echasnovski/mini.nvim',
     config = function()
       require('mini.surround').setup({
@@ -557,6 +587,17 @@ require('lazy').setup({
     config = function()
       require("refactoring").setup()
     end,
+  },
+
+  -- LLM
+  {
+    "olimorris/codecompanion.nvim",
+    version = "^19.0.0",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {}
   },
   {
     "zbirenbaum/copilot.lua",

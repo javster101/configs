@@ -27,41 +27,22 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 
 require('plugins')
 
-local signs = { Error = "", Warn = "", Hint = "󰌶", Info = "" }
-local kind_icons = {
-  Text = "",
-  Method = "",
-  Function = "󰊕",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-  Copilot = ""
-}
-
-
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌶',
+    },
+    linehl = {
+      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+    },
+    numhl = {
+      [vim.diagnostic.severity.WARN] = 'WarningMsg',
+    },
+  },
+})
 
 require('keybinds').load_keybinds()
 
@@ -102,67 +83,19 @@ local enhance_server_opts = {
   end,
 }
 
+local capabilities = {
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true
+    }
+  }
+}
+
+capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+
 vim.lsp.inlay_hint.enable(true)
-require 'lspconfig'.gdscript.setup {}
-require('mason-lspconfig').setup_handlers({
-  function(server)
-    local opts = {
-      capabilities = {
-        textDocument = {
-          foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-          }
-        }
-      }
-    }
-
-    if enhance_server_opts[server] then
-      enhance_server_opts[server](opts)
-    end
-
-    opts.capabilities = require('blink.cmp').get_lsp_capabilities(opts.capabilities)
-    require('lspconfig')[server].setup(opts)
-  end,
-  ['jdtls'] = function()
-    local opts = {
-      capabilities = capabilities,
-      init_options = {
-        extendedClientCapabilities = require('jdtls').extendedClientCapabilities
-      },
-      settings = {
-        java = {
-          signatureHelp = { enabled = true }
-        }
-      },
-      cmd = {
-        'jdtls',
-        '--jvm-arg=-Xmx8G',
-        '-configuration', '/var/home/javst/.cache/jdtls/config',
-        '-data', '/var/home/javst/.cache/jdtls/workspace'
-      },
-      root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', 'build.gradle', '.git', 'mvnw' }, { upward = true })[1]),
-      flags = {
-        allow_incremental_sync = true
-      },
-      on_attach = function(client, buffer)
-        -- require('jdtls').setup_dap() --{ hotcodereplace = 'auto' })
-        require('jdtls.setup').add_commands()
-        general_attach(client, buffer)
-      end
-    }
-
-    vim.api.nvim_create_autocmd('FileType', {
-      pattern = 'java',
-      callback = function()
-        require('jdtls').start_or_attach(opts)
-      end
-    })
-  end,
-  ['rust_analyzer'] = function()
-    -- Autoruns with rustaceanvim
-  end
-})
+vim.lsp.config('*', capabilities)
 
 numbers = function(opts)
   return string.format('%s.%s', opts.lower(opts.id), opts.lower(opts.ordinal))

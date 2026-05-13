@@ -4,6 +4,12 @@ out.load_keybinds = function()
   -- Mappings.
   local wk = require('which-key')
 
+  vim.keymap.del('n', 'gra')
+  vim.keymap.del('n', 'gri')
+  vim.keymap.del('n', 'grn')
+  vim.keymap.del('n', 'grr')
+  vim.keymap.del('n', 'grt')
+
   wk.add({
     {
       '<space>',
@@ -21,8 +27,19 @@ out.load_keybinds = function()
               }
             end
           },
-          { "ca", function() vim.cmd.Lspsaga('code_action') end, desc = "Code action" },
-          { "cl", vim.lsp.codelens.run,                          desc = "Run codelens" },
+          {
+            'c',
+            group = "Code",
+            expand = function()
+              return {
+                { "c", function() vim.cmd.CodeCompanionChat('Toggle') end, desc = "Toggle Code Companion Chat" },
+                { "p", vim.cmd.CodeCompanionActions,                       desc = "Toggle Code Companion Chat" },
+                { "i", vim.cmd.CodeCompanion,                              desc = "Toggle Code Companion Chat" },
+                { "a", function() vim.cmd.Lspsaga('code_action') end,      desc = "Code action" },
+                { "l", vim.lsp.codelens.run,                               desc = "Run codelens" },
+              }
+            end
+          },
           {
             'd',
             group = "Debug",
@@ -44,6 +61,21 @@ out.load_keybinds = function()
             end
           },
           { "l",  function() require("nabla").popup() end,            desc = 'Render LaTEX' },
+          {
+            "h",
+            group = "Harpoon",
+            expand = function()
+              local harpoon = require("harpoon")
+              return {
+                { "a", function() harpoon:list():add() end,                         desc = "Add to harpoon list" },
+                { "l", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, desc = "View harpoon list" },
+                { "1", function() harpoon:list():select(1) end },
+                { "2", function() harpoon:list():select(2) end },
+                { "3", function() harpoon:list():select(3) end },
+                { "4", function() harpoon:list():select(4) end },
+              }
+            end
+          },
           {
             'f',
             group = "Telescope",
@@ -70,9 +102,8 @@ out.load_keybinds = function()
               }
             end
           },
-          { "k",  function() vim.cmd.Lspsaga('hover_doc') end,        desc = "Hover doc" },
-          { "K",  function() vim.cmd.Lspsaga('hover_doc ++keep') end, desc = "Open and keep hover doc" },
-          { "pi", '<cmd>PasteImage<cr>',                              desc = "Paste image" },
+          { "k",  function() vim.cmd.Lspsaga('hover_doc ++keep') end, desc = "Hover doc" },
+          { "pi", vim.cmd.PasteImage,                              desc = "Paste image" },
           { "od", function() vim.cmd.RustLsp('openDocs') end,         desc = "Open docs.rs" },
           {
             'r',
@@ -94,7 +125,6 @@ out.load_keybinds = function()
               return {
                 { "p", function() vim.cmd.BufferLineTogglePin() end, desc = "Pin Buffer" },
                 { "d", function() vim.cmd.BufferLinePickClose() end, desc = "Close Buffer" },
-                "Buffers"
               }
             end
           },
@@ -121,7 +151,7 @@ out.load_keybinds = function()
           { "d", vim.lsp.buf.definition,                            desc = "Go to definition" },
           { "D", vim.lsp.buf.declaration,                           desc = "Go to declaration" },
           { "m", vim.lsp.buf.implementation,                        desc = "Go to implementation" },
-          { "u", function() vim.cmd.Lspsaga('finder') end,          desc = "Find usages" },
+          { "r", vim.lsp.buf.references,                            desc = "Find usages" },
           { "p", function() vim.cmd.Lspsaga('peek_definition') end, desc = "Peek definition" },
           { "i", function() vim.cmd.Lspsaga('incoming_calls') end,  desc = "Go to incoming calls" },
           { "o", function() vim.cmd.Lspsaga('outgoing_calls') end,  desc = "Go to outgoing calls" },
@@ -135,9 +165,10 @@ out.load_keybinds = function()
       })
     end,
     },
-    { 'r',               function() require('flash').remote() end,       desc = "Remote Flash",         mode = "o" },
+    { 'r',               function() require('flash').remote() end,       desc = "Remote Flash",           mode = "o" },
     { "-",               require("oil").open,                            desc = "Open parent directory" },
 
+    { "K",               function() vim.cmd.Lspsaga('hover_doc') end,    desc = "Open and keep hover doc" },
     { '<M-n>',           function() vim.cmd.Telescope('find_files') end, desc = "Find files" },
     { '<M-b>',           function() vim.cmd.Telescope('buffers') end,    desc = "Find files" },
     -- smart-splits
